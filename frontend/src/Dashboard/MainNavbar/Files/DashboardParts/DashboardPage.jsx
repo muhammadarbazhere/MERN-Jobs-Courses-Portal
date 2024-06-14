@@ -22,7 +22,7 @@ function DashboardPage() {
         className=" text-gray-800 cursor-pointer font-medium rounded-lg text-lg px-1 my-0 py-0 text-center inline-flex items-center gap-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800  hover:transform hover:-translate-y-1 transition-all duration-300 ease-in-out"
         type="button"
       >
-        <Link to={'/MyWelcome'} className='flex gap-2 items-center'>
+        <Link className='flex gap-2 items-center'>
          <MdDashboardCustomize size={20} className=''/>
         <h1 className=''>Dashboard</h1>
         </Link>

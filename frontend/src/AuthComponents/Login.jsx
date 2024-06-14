@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaUser, FaEnvelope } from "react-icons/fa";
+import { FaEnvelope } from "react-icons/fa";
 import { MdOutlineWifiPassword } from "react-icons/md";
 import logo from "../assets/logo.jpg";
 import { Link, useNavigate } from "react-router-dom";

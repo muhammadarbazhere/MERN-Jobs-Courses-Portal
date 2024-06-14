@@ -11,7 +11,7 @@ const storage = multer.diskStorage({
     cb(null, './uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    cb(null, `${Date.now()}-${file.originalname}`);
   }
 });
 
@@ -89,7 +89,7 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user._id, role: user.role }, "secret-key", { expiresIn: "3d" });
     res.cookie("token", token, { httpOnly: true, sameSite: "Strict" });
 
-    // Send email
+    // Send welcome back email
     const mailOptions = {
       from: 'muhammad.arbazhere@gmail.com',
       to: email,
@@ -112,6 +112,7 @@ const login = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 
 // Verify token

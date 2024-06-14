@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import ProgressCards from './ProgressCards';
 
 const OrderSummary = () => {
     return (
@@ -10,13 +9,12 @@ const OrderSummary = () => {
                 You are here:<span className="text-gray-600">
                    Home / Dashboard</span>
             </div>
-            <Link to='/MyWelcome' className="bg-green-500 hover:bg-green-600 text-white font-bold sm:py-2 py-1 px-2 sm:px-4 rounded">
+            <Link to='/MyAdmin' className="bg-green-500 hover:bg-green-600 text-white font-bold sm:py-2 py-1 px-2 sm:px-4 rounded">
                 + ADD ITEMS
             </Link>
 
             
         </div>
-        {/* <ProgressCards/> */}
  </div>
       
     );

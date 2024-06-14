@@ -51,7 +51,7 @@ const Dashboard = () => {
                     </div>
                     <hr className='my-2' />
 
-                    <NavLink to="/MyWelcome" className="flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base text-black hover:bg-gray-300" activeClassName="bg-gray-800">
+                    <NavLink to="/MyAdmin" className="flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base text-black hover:bg-gray-300" activeClassName="bg-gray-800">
                         <AdminPanelSettingsIcon className='text-black' size={30} />
                         <span className='px-2'>Admin</span>
                     </NavLink>

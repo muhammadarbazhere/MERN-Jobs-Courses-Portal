@@ -8,10 +8,11 @@ import { FaPowerOff } from "react-icons/fa6";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../App/AuthSlice";
+import { useNavigate } from "react-router-dom";
 
 function Avatar() {
+  const  navigate = useNavigate()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Added loading state
 
   const openDropdown = () => {
     setIsDropdownOpen(true);
@@ -32,7 +33,10 @@ function Avatar() {
   }, []);
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
+
+  const [loading, setLoading] = useState(false); 
   const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
 
   const sendRequest = async () => {
     setLoading(true); // Set loading to true when sending request
@@ -61,8 +65,6 @@ function Avatar() {
     }
   }, [isLoggedIn]);
 
-  const dispatch = useDispatch();
-
   const handleLogout = async () => {
     try {
       const res = await fetch("http://localhost:3000/logout", {
@@ -71,8 +73,8 @@ function Avatar() {
       });
       if (res.status === 200) {
         dispatch(authActions.logout());
-        console.log("logout successfully");
-        Navigate("/login");
+        console.log("Logout successful");
+        navigate("/signin"); // Ensure this path is correct
       } else {
         throw new Error("Unable to logout! Try again");
       }
@@ -99,7 +101,7 @@ function Avatar() {
               alt="Profile"
             />
           ) : (
-            <p></p>
+            <p className="text-gray-500"> No User Logged in</p>
           )}
         </div>
       </p>
