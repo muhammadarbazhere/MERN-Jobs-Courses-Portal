@@ -11,7 +11,7 @@ import { authActions } from "../../../App/AuthSlice";
 import { useNavigate } from "react-router-dom";
 
 function Avatar() {
-  const  navigate = useNavigate()
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const openDropdown = () => {
@@ -34,7 +34,7 @@ function Avatar() {
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
 
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
@@ -43,6 +43,9 @@ function Avatar() {
     try {
       const response = await fetch("http://localhost:3000/user", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
         credentials: "include",
       });
 
@@ -122,10 +125,10 @@ function Avatar() {
               <span className=" flex text-md flex-col justify-center font-bold">
                 {user ? (
                   <>
-                    <h1>{user.firstName} {user.lastName}</h1>
-                    <p className="text-xs text-gray-400">
-                      {user.email}
-                    </p>
+                    <h1>
+                      {user.firstName} {user.lastName}
+                    </h1>
+                    <p className="text-xs text-gray-400">{user.email}</p>
                   </>
                 ) : null}
               </span>

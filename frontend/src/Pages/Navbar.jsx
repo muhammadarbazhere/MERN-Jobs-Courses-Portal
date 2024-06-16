@@ -5,14 +5,10 @@ import logo from "../assets/logo.jpg";
 import Avatar from "../Dashboard/MainNavbar/Files/Avatar";
 import { useSelector } from "react-redux";
 
-import { useCookies } from "react-cookie";
-import * as jwt_decode from 'jwt-decode';
-
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
-  const [cookies] = useCookies(["token"]); // Make sure "token" matches the cookie name
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -25,27 +21,37 @@ function Navbar() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
 
   useEffect(() => {
-    const token = cookies.token;
-    console.log("Token from cookies:", token); // Check if token is retrieved
-
-    if (token) {
+    const fetchUserData = async () => {
       try {
-        const decodedToken = jwt_decode(token); // Decode the token
-        console.log("Decoded Token:", decodedToken);
-
-        // Check if the decoded token has the admin role
-        if (decodedToken.role === "admin") {
+        const response = await fetch('http://localhost:3000/user', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: "include"
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        console.log("User data:", data);
+        
+        if (data.user.role === "admin") {
           setIsAdmin(true);
         } else {
-          setIsAdmin(false); // Ensure to reset admin state if not admin
+          setIsAdmin(false);
         }
       } catch (error) {
-        console.error("Error decoding token:", error);
+        console.error("Error fetching user data:", error);
+        setIsAdmin(false);
       }
-    } else {
-      console.log("Token not found in cookies.");
-    }
-  }, [isLoggedIn, cookies.token]);
+    };
+  
+    fetchUserData();
+  }, [isLoggedIn]);
+  
   
 
   return (
