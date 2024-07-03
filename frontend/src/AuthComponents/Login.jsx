@@ -51,7 +51,7 @@ function Login() {
           navigate("/");
           console.log("User logged in");
         }
-        alert('Login successful.Please check your email for confirmation.');
+        alert('Login successful. Please check your email for confirmation.');
 
         setInputs({
           email: '',
