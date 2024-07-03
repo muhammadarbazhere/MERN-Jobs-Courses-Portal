@@ -104,11 +104,11 @@ function Navbar() {
               <Avatar />
             </>
           ) : (
-            <>
+            <div className=" px-2 sm:px-0 mt-5 sm:mt-0 ">
               {location.pathname === "/signin" && (
                 <NavLink
                   to="/signup"
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 mt-3 sm:mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="bg-gradient-to-r from-cyan-500 to-blue-500 mt-8 sm:mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
                   Register
                 </NavLink>
@@ -121,7 +121,7 @@ function Navbar() {
                   Signin
                 </NavLink>
               )}
-            </>
+            </div>
           )}
           {isLoggedIn && (
             <button
