@@ -70,14 +70,7 @@ const RemoteJobs1 = () => {
           </div>
         </div>
 
-        <div className="mt-20 text-center">
-          <a
-            href="/enroll"
-            className="inline-block bg-gradient-to-r from-green-400 to-blue-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:from-green-500 hover:to-blue-600"
-          >
-            Apply Here
-          </a>
-        </div>
+       
       </div>
     </div>
   );

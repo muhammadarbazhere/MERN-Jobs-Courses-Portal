@@ -1,14 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { RiArrowDropDownLine } from "react-icons/ri";
-import Admin from "../../../assets/admin-image.jpg";
-import { IoSettingsOutline } from "react-icons/io5";
-import { MdAccountCircle } from "react-icons/md";
-import { CiDollar } from "react-icons/ci";
 import { FaPowerOff } from "react-icons/fa6";
 import { IoPersonAddSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../App/AuthSlice";
 import { useNavigate } from "react-router-dom";
+import { VscDebugStepBack } from "react-icons/vsc";
 
 function Avatar() {
   const navigate = useNavigate();
@@ -36,6 +32,7 @@ function Avatar() {
 
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
 
   const sendRequest = async () => {
@@ -52,6 +49,11 @@ function Avatar() {
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
+        if (data.user.role === "admin") {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
       } else {
         throw new Error("User not found");
       }
@@ -91,38 +93,44 @@ function Avatar() {
       <p
         id="dropdownHoverButton"
         onClick={openDropdown}
-        className="text-gray-600 lg:text-white  cursor-pointer font-medium rounded-lg text-lg px-1 py-0 text-center inline-flex items-center gap-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className="text-gray-600 lg:text-white cursor-pointer font-medium rounded-lg text-lg px-1 py-0 text-center inline-flex items-center gap-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
         type="button"
       >
         <div className="w-full h-full">
           {loading ? (
             <p>Loading...</p>
-          ) : user && user.image ? (
+          ) : 
+          
+          user && user.image ? (
             <img
               className="sm:w-10 w-12 sm:h-10 h-12 rounded-full"
               src={`http://localhost:3000/${user.image}`}
               alt="Profile"
             />
-          ) : (
-            <p className="text-gray-500"> No User Logged in</p>
-          )}
+          ) : 
+          (
+            <p className="text-gray-500"> Loading... </p>
+          )
+          }
+
+          
         </div>
       </p>
 
       {/* Dropdown menu */}
       <div
         id="dropdownHover"
-        className={`absolute top-full -right-14 sm:left:28    z-10 ${
+        className={`absolute top-full -right-14 sm:left:28 z-10 ${
           isDropdownOpen ? "" : "hidden"
-        }  bg-white divide-y divide-gray-100 rounded-lg shadow w-56 lg:w-60 sm:mr-16 dark:bg-gray-700`}
+        } bg-white divide-y divide-gray-100 rounded-lg shadow w-56 lg:w-60 sm:mr-16 dark:bg-gray-700`}
       >
         <ul
           className="py-2 text-sm text-gray-700 dark:text-gray-200"
           aria-labelledby="dropdownHoverButton"
         >
           <li>
-            <a href="#" className="flex gap-3 px-4 py-6  ">
-              <span className=" flex text-md flex-col justify-center font-bold">
+            <a href="#" className="flex gap-3 px-4 py-6">
+              <span className="flex text-md flex-col justify-center font-bold">
                 {user ? (
                   <>
                     <h1>
@@ -135,30 +143,43 @@ function Avatar() {
             </a>
           </li>
           <hr />
-
-          <hr />
-          <li>
-            <div
-              onClick={handleLogout}
-              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7]  hover:text-white"
-            >
-              <span>
-                <FaPowerOff size={20} />
-              </span>
-              <h1>Logout</h1>
-            </div>
-          </li>
-          <hr />
+          {isAdmin && (
+            <>
+              <li>
+                <div
+                  className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
+                >
+                  <span>
+                    <VscDebugStepBack size={20} />
+                  </span>
+                  <a href="/dashboard">Back To Main</a>
+                </div>
+              </li>
+              <hr />
+            </>
+          )}
           <li>
             <a
               href="/signup"
-              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7]  hover:text-white"
+              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
             >
               <span>
                 <IoPersonAddSharp size={20} />
               </span>
               <h1>Add another account</h1>
             </a>
+          </li>
+          <hr />
+          <li>
+            <div
+              onClick={handleLogout}
+              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
+            >
+              <span>
+                <FaPowerOff size={20} />
+              </span>
+              <h1>Logout</h1>
+            </div>
           </li>
           <hr />
         </ul>

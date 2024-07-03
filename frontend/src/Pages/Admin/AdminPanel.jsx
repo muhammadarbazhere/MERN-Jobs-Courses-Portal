@@ -2,7 +2,6 @@ import React from "react";
 import DashboardPage from "../../Dashboard/MainNavbar/Files/DashboardParts/DashboardPage";
 import Career from "../../Dashboard/MainNavbar/Files/CareerParts/Career";
 import ELearning from "../../Dashboard/MainNavbar/Files/ELearningParts/ELearning";
-import Welcome from "./Welcome";
 
 function AdminPanel() {
   return (

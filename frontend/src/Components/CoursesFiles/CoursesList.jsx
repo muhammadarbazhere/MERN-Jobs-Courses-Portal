@@ -7,7 +7,7 @@ import { FaArrowRight } from "react-icons/fa";
 
 function Courses() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(8);
+  const [postsPerPage] = useState(4);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

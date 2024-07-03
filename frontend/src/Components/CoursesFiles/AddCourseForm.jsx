@@ -131,6 +131,9 @@ function AddCourseForm() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Select a category</option>
+              <option value="Website Development">
+                Website Development
+              </option>
               <option value="Front-End Development">
                 Front-End Development
               </option>
@@ -148,13 +151,13 @@ function AddCourseForm() {
               htmlFor="charges"
               className="block text-gray-700 text-sm font-bold mb-2"
             >
-              Charges
+              Charges ($)
             </label>
             <input
               type="number"
               id="charges"
               name="charges"
-              placeholder="Course Charges in $ ..*"
+              placeholder="Course Charges ..*"
               value={formData.charges}
               onChange={handleChange}
               required

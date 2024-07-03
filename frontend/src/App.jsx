@@ -19,6 +19,7 @@ import CourseList from "./Dashboard/MainNavbar/Files/DashboardParts/Course/Cours
 import AddCourse from "./Dashboard/MainNavbar/Files/DashboardParts/Course/AddCourse";
 import AddJobs from "./Dashboard/MainNavbar/Files/DashboardParts/Job/AddJobs";
 import JobsList from "./Dashboard/MainNavbar/Files/DashboardParts/Job/JobsList";
+import WebsiteDevelopment from "./Dashboard/MainNavbar/Files/ELearningParts/Categories/WebsiteDevelopment";
 import Frontend from "./Dashboard/MainNavbar/Files/ELearningParts/Categories/Frontend";
 import Backend from "./Dashboard/MainNavbar/Files/ELearningParts/Categories/Backend";
 import Graphic from "./Dashboard/MainNavbar/Files/ELearningParts/Categories/Graphic";
@@ -85,6 +86,7 @@ function AppRoutes() {
         <Route path="/MyJobsList" element={<JobsList />} />
         <Route path="/MyEdit/:id" element={<EditCourse />} />
         <Route path="/MyeditJobs/:id" element={<EditJobs />} />
+        <Route path="/MyWebsiteDevelopment" element={<WebsiteDevelopment />} />
         <Route path="/MyFrontend" element={<Frontend />} />
         <Route path="/MyBackend" element={<Backend />} />
         <Route path="/MyGraphic" element={<Graphic />} />

@@ -137,6 +137,7 @@ const EditCourse = () => {
                 onChange={newData}
               >
                 <option value="">Select a category</option>
+                <option value="Website Development">Website Development</option>
                 <option value="Front-End Development">Front-End Development</option>
                 <option value="Back-End Development">Back-End Development</option>
                 <option value="Social Media Marketing">Social Media Marketing</option>
@@ -146,7 +147,7 @@ const EditCourse = () => {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="charges" className="block text-gray-700 text-sm font-bold mb-2">Charges</label>
+              <label htmlFor="charges" className="block text-gray-700 text-sm font-bold mb-2">Charges ($)</label>
               <input
                 type="number"
                 id="charges"
