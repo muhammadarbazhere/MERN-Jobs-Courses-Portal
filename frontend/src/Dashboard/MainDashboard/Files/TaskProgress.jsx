@@ -2,14 +2,14 @@ import React from 'react';
 
 const TaskProgress = () => {
   const sliders = [
-    { name: 'Web Design', progress: 90 },
-    { name: 'Social Media', progress: 89 },
-    { name: 'Graphic Design', progress: 90 },
-    { name: 'Human Resource', progress: 95 }
+    { name: 'SEO', progress: 90 },
+    { name: 'QA', progress: 89 },
+    { name: 'Analytics', progress: 90 },
+    { name: 'UI', progress: 87 }, 
   ];
 
   return (
-    <div className='bg-white px-10 w-2/6 sm:w-3/6 font-[Chivo]'>
+    <div className='bg-white px-10 w-2/6 sm:w-full lg:w-[70%] font-[Chivo]'>
          <h1 className='py-2 pt-8  text-gray-700 font-semibold font-[Chivo]'>Task Progress</h1>
     <div className="flex flex-col items-center text-sm">
        

@@ -62,6 +62,7 @@ function AppRoutes() {
       {location.pathname.startsWith("/My") && isLoggedIn && <AdminPanel />}
 
       <Routes>
+        
         <Route
           path="/"
           element={isLoggedIn ? <Home /> : <Navigate to="/signin" />}
@@ -95,6 +96,10 @@ function AppRoutes() {
         <Route path="/MyHR" element={<HumanResource />} />
         <Route path="/MyJobs" element={<Jobs />} />
         <Route path="/MyInternships" element={<Internship />} />
+
+        
+
+
       </Routes>
 
       {isLoggedIn && location.pathname !== "/dashboard" && <Footer />}

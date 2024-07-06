@@ -41,59 +41,81 @@ const ProgressCards = () => {
   }, [counts]);
 
   useEffect(() => {
-    const updatedCounts = {
-      students: 10368,
-      rating: 38668,
-      completion: 16734,
-      earnings: 10386, // Update earnings value
+    // Fetch user data from the backend
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/allUsers', {
+          method: 'GET',
+          credentials: 'include', // Include credentials for cookies
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setCounts((prevCounts) => ({
+            ...prevCounts,
+            students: data.users.length,
+          }));
+        } else {
+          console.error('Failed to fetch users:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
     };
-    setCounts(updatedCounts);
+
+    fetchUserData();
+
+    const updatedCounts = {
+      rating: 0,
+      completion: 0,
+      earnings: 0, // Update earnings value
+    };
+    setCounts((prevCounts) => ({ ...prevCounts, ...updatedCounts }));
   }, []);
 
-  return (<div className='ml-32 sm:ml-56 '>
-    
-    <div className="flex flex-row  w-full  items-center font-Chivo justify-around py-5  text-base sm:text-xl gap-2">
-      <div className="space-y-1 bg-white  w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
-        <p className="flex flex-col">
-          <FaUsers className="text-blue-500 text-2xl" />
-          <h1 className="count text-blue-500" data-target={counts.students}>
-            0
-          </h1>
-          <h5 className="text-xs text-gray-400">MEMBERS ONLINE</h5>
-        </p>
-      </div>
+  return (
+    <div className='ml-32 sm:ml-56 '>
+      <div className="flex flex-row w-full items-center font-Chivo justify-around py-5 text-base sm:text-xl gap-2">
+        <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
+          <p className="flex flex-col">
+            <FaUsers className="text-blue-500 text-2xl" />
+            <h1 className="count text-blue-500" data-target={counts.students}>
+              0
+            </h1>
+            <h5 className="text-xs text-gray-400">MEMBERS ONLINE</h5>
+          </p>
+        </div>
 
-      <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
-        <p className="flex flex-col">
-          <FaShoppingBag className="text-blue-500 text-2xl" />
-          <h1 className="count text-blue-500" data-target={counts.rating}>
-            0
-          </h1>
-          <h5 className="text-xs text-gray-400">ITEMS SOLD</h5>
-        </p>
-      </div>
+        <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
+          <p className="flex flex-col">
+            <FaShoppingBag className="text-blue-500 text-2xl" />
+            <h1 className="count text-blue-500" data-target={counts.rating}>
+              0
+            </h1>
+            <h5 className="text-xs text-gray-400">COURSES SOLD</h5>
+          </p>
+        </div>
 
-      <div className="space-y-1 bg-white w-2/6 sm:w-1/5  h-28 px-1 sm:px-4 py-4">
-        <p className="flex flex-col">
-          <FaCalendarCheck className="text-blue-500 text-2xl" />
-          <h1 className="count text-blue-500" data-target={counts.completion}>
-            0
-          </h1>
-          <h5 className="text-xs text-gray-400">THIS WEEK</h5>
-        </p>
-      </div>
+        <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
+          <p className="flex flex-col">
+            <FaCalendarCheck className="text-blue-500 text-2xl" />
+            <h1 className="count text-blue-500" data-target={counts.completion}>
+              0
+            </h1>
+            <h5 className="text-xs text-gray-400">THIS WEEK</h5>
+          </p>
+        </div>
 
-      <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
-        <p className="flex flex-col">
-          <FaDollarSign className="text-blue-500 text-2xl" />
-          <h1 className="count text-blue-500" data-target={counts.earnings}>
-            0
-          </h1>
-          <h5 className="text-xs text-gray-400">TOTAL EARNINGS</h5>
-        </p>
+        <div className="space-y-1 bg-white w-2/6 sm:w-1/5 h-28 px-1 sm:px-4 py-4">
+          <p className="flex flex-col">
+            <FaDollarSign className="text-blue-500 text-2xl" />
+            <h1 className="count text-blue-500" data-target={counts.earnings}>
+              0
+            </h1>
+            <h5 className="text-xs text-gray-400">TOTAL EARNINGS</h5>
+          </p>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

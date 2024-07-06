@@ -66,12 +66,10 @@ const signup = async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log("Error sending email:", error);
-        return res
-          .status(500)
-          .json({
-            message:
-              "Error sending email. Signup succeeded but email sending failed.",
-          });
+        return res.status(500).json({
+          message:
+            "Error sending email. Signup succeeded but email sending failed.",
+        });
       }
       console.log("Email sent:", info.response);
     });
@@ -122,16 +120,36 @@ const login = async (req, res) => {
       }
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Successfully logged in",
-        user,
-        token,
-        role: user.role,
-      });
+    res.status(200).json({
+      message: "Successfully logged in",
+      user,
+      token,
+      role: user.role,
+    });
   } catch (error) {
     console.error("Error in login:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// update user role
+const updateUserRole = async (req, res) => {
+  const { userId, newRole } = req.body;
+
+  try {
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { role: newRole },
+      { new: true } // return the updated document
+    );
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User role updated", user });
+  } catch (error) {
+    console.error("Error updating user role:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -182,7 +200,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-
 // Logout
 const logout = async (req, res) => {
   try {
@@ -194,5 +211,13 @@ const logout = async (req, res) => {
   }
 };
 
-
-module.exports = { signup, login, verifyToken, getUserInfo, getAllUsers, logout, upload };
+module.exports = {
+  signup,
+  login,
+  updateUserRole,
+  verifyToken,
+  getUserInfo,
+  getAllUsers,
+  logout,
+  upload,
+};

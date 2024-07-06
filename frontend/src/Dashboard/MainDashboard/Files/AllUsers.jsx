@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaClipboardUser } from "react-icons/fa6";
 
-const UserData = () => {
+const AllUsers = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,9 @@ const UserData = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setUsers(data.users);
+          // Filter users where role is "user"
+          const filteredUsers = data.users.filter(user => user.role === "user");
+          setUsers(filteredUsers);
         } else {
           throw new Error("Failed to fetch user data");
         }
@@ -36,8 +38,10 @@ const UserData = () => {
   }, []);
 
   const handleRoleChange = async (userId, newRole) => {
-    const user = users.find(user => user._id === userId);
-    const confirmationMessage = `Are you sure you want to change ${user.firstName} ${user.lastName}'s role to ${newRole}?`;
+    const confirmationMessage = newRole === "admin" 
+      ? "Are you sure you want to make this user an admin?"
+      : "Are you sure you want to make this admin a user?";
+
     const isConfirmed = window.confirm(confirmationMessage);
 
     if (isConfirmed) {
@@ -53,7 +57,8 @@ const UserData = () => {
 
         if (response.ok) {
           const data = await response.json();
-          setUsers(users.map(user => (user._id === userId ? data.user : user)));
+          // Remove user from list if role is updated to "admin"
+          setUsers(users.filter(user => user._id !== userId));
         } else {
           throw new Error("Failed to update user role");
         }
@@ -63,12 +68,13 @@ const UserData = () => {
       }
     }
   };
+
   return (
-    <div className="ml-24 sm:ml-56 ">
+    <div className="ml-24 sm:ml-56">
       <div className="bg-blue-100 mt-8 p-4 font-[Chivo]">
         <div className="font-bold text-lg flex gap-1 items-center">
           <FaClipboardUser className="" size={20} />
-          <h1>All Data</h1>
+          <h1>All Users Data</h1>
         </div>
 
         {loading && <p>Loading...</p>}
@@ -105,7 +111,7 @@ const UserData = () => {
                         user.role === "admin" ? "user" : "admin"
                       )
                     }
-                    className="bg-yellow-500 text-white p-2 w-28 rounded"
+                    className="bg-yellow-500 text-white p-2 rounded"
                   >
                     Make {user.role === "admin" ? "user" : "admin"}
                   </button>
@@ -119,4 +125,4 @@ const UserData = () => {
   );
 };
 
-export default UserData;
+export default AllUsers;

@@ -5,10 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../App/AuthSlice";
 import { useNavigate } from "react-router-dom";
 import { VscDebugStepBack } from "react-icons/vsc";
+import { RxDashboard } from "react-icons/rx";
 
 function Avatar() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openDropdown = () => {
     setIsDropdownOpen(true);
@@ -88,6 +90,13 @@ function Avatar() {
     }
   };
 
+  const confirmLogout = () => {
+    const isConfirmed = window.confirm("Are you sure you want to log out?");
+    if (isConfirmed) {
+      handleLogout();
+    }
+  };
+
   return (
     <div className="relative mt-2 sm:mt-0" ref={dropdownRef}>
       <p
@@ -99,21 +108,15 @@ function Avatar() {
         <div className="w-full h-full">
           {loading ? (
             <p>Loading...</p>
-          ) : 
-          
-          user && user.image ? (
+          ) : user && user.image ? (
             <img
               className="sm:w-10 w-12 sm:h-10 h-12 rounded-full"
               src={`http://localhost:3000/${user.image}`}
               alt="Profile"
             />
-          ) : 
-          (
-            <p className="text-gray-500"> Loading... </p>
-          )
-          }
-
-          
+          ) : (
+            <p className="text-gray-500">Loading...</p>
+          )}
         </div>
       </p>
 
@@ -146,11 +149,9 @@ function Avatar() {
           {isAdmin && (
             <>
               <li>
-                <div
-                  className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
-                >
+                <div className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white">
                   <span>
-                    <VscDebugStepBack size={20} />
+                    <RxDashboard size={20} />
                   </span>
                   <a href="/dashboard">Back To Main</a>
                 </div>
@@ -172,7 +173,7 @@ function Avatar() {
           <hr />
           <li>
             <div
-              onClick={handleLogout}
+              onClick={confirmLogout}
               className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
             >
               <span>
