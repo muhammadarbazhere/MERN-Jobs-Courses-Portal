@@ -12,6 +12,12 @@ function Home() {
       window.location.href = '/learning'; 
     }, ); 
   };
+  const redirectToJobsPage = () => {
+
+    setTimeout(() => {
+      window.location.href = '/remoteJobs'; 
+    }, ); 
+  };
   
   return (
 
@@ -27,7 +33,7 @@ function Home() {
    
                         <div className=" flex flex-col lg:flex-row font-[Chivo]  lg:justify-start lg:space-x-8  mt-4 sm:items-center">
                           
-    <button className=' bg-gradient-to-r from-cyan-500 to-blue-500 w-auto lg:w-44 md:w-48 h-14 sm:w-3/6 rounded-xl text-white '>Feasible Timing</button> 
+    <button onClick={redirectToJobsPage} className=' bg-gradient-to-r from-cyan-500 to-blue-500 w-auto lg:w-44 md:w-48 h-14 sm:w-3/6 rounded-xl text-white '>Feasible Timing</button> 
 
 <button onClick={redirectToCoursesPage} className='bg-gradient-to-r from-cyan-500 to-blue-500 text-white  mt-2 lg:mt-0 w-auto md:w-56 h-14 sm:w-3/6  rounded-xl '>Project Base Learning</button> 
                           </div>

@@ -1,16 +1,23 @@
 // controllers/jobInternshipController.js
+
+const nodemailer = require('nodemailer');
+const multer = require('multer');
+require('dotenv').config();
+
 const JobInternship = require('../model/JobSchema');
 
-// const createJobInternship = async (req, res) => {
-//   try {
-//     const { title, description, type, jobOrInternship } = req.body;
-//     const jobInternship = new JobInternship({ title, description, type, jobOrInternship });
-//     await jobInternship.save();
-//     res.status(201).json({ message: 'Job/Internship created successfully', jobInternship });
-//   } catch (error) {
-//     res.status(500).json({ message: 'Failed to create job/internship', error: error.message });
-//   }
-// };
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads/');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
+
 const createJobInternship = async (req, res) => {
     try {
       const { title, description, jobOrInternship } = req.body;
@@ -87,4 +94,13 @@ const deleteJobInternship = async (req, res) => {
   }
 };
 
-module.exports = { createJobInternship, getJobsInternships, getJobInternshipById, updateJobInternship, deleteJobInternship };
+// Configure Nodemailer with admin credentials
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_ADMIN,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+
+module.exports = { createJobInternship, getJobsInternships, getJobInternshipById, updateJobInternship, deleteJobInternship, upload};

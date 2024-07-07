@@ -149,7 +149,7 @@ function Avatar() {
           {isAdmin && (
             <>
               <li>
-                <div className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white">
+                <div className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white duration-1000 ">
                   <span>
                     <RxDashboard size={20} />
                   </span>
@@ -162,7 +162,7 @@ function Avatar() {
           <li>
             <a
               href="/signup"
-              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
+              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white duration-1000"
             >
               <span>
                 <IoPersonAddSharp size={20} />
@@ -174,7 +174,7 @@ function Avatar() {
           <li>
             <div
               onClick={confirmLogout}
-              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white"
+              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white duration-1000"
             >
               <span>
                 <FaPowerOff size={20} />

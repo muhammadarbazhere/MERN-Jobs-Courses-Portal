@@ -90,9 +90,9 @@ const UserData = () => {
                 <td className="p-2">{user.email}</td>
                 <td className="p-2">
                   <button
-                    className={`w-24 p-2 rounded ${
-                      user.role === "admin" ? "bg-green-500" : "bg-blue-500"
-                    } text-white`}
+                    className={`w-24 p-2 rounded cursor-default ${
+                      user.role === "admin" ? "border-green-500 border" : "border-blue-500 border"
+                    } text-black`}
                   >
                     {user.role}
                   </button>
@@ -105,7 +105,7 @@ const UserData = () => {
                         user.role === "admin" ? "user" : "admin"
                       )
                     }
-                    className="bg-yellow-500 text-white p-2 w-28 rounded"
+                    className="bg-yellow-500 hover:bg-yellow-700 duration-1000 text-white p-2 w-28 rounded"
                   >
                     Make {user.role === "admin" ? "user" : "admin"}
                   </button>

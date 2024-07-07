@@ -7,8 +7,11 @@ const Struggle = () => {
 const navigate = useNavigate()
 
 const onSubmitClick = () => {
-    navigate('/form');
-};
+
+    setTimeout(() => {
+      window.location.href = '/form'; 
+    }, ); 
+  };
 
 
     return (

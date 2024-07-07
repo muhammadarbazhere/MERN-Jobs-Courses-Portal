@@ -25,7 +25,7 @@ function FootA() {
 
   </div >
 
-  <button onClick={handleSubmit} className="border-2 border-brown-700  font-[Chivo] flex items-center w-24 h-12 text-black bg-white border-white hover:text-white hover:bg-black hover:border-black rounded-md font-chivo text-lg">
+  <button onClick={handleSubmit} className="border-2 border-brown-700  font-[Chivo] flex items-center w-24 h-12 text-black bg-white border-white hover:text-white hover:bg-black hover:border-black rounded-md font-chivo text-lg duration-1000">
     Get Started
   </button>
   

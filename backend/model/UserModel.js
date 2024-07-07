@@ -29,7 +29,12 @@ const userSchema = mongoose.Schema({
     role: {
         type: String,
         default: 'user',
-    }
+    },
+     // Add a field for resume, assuming 'resume' stores the file path or name
+    resume: {
+        type: String,
+        required: true,
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

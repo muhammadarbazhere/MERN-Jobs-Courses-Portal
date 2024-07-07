@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: process.env.EMAIL_USER,
+    user: process.env.EMAIL_ADMIN,
     pass: process.env.EMAIL_PASS, // Use the app-specific password here
   },
 });
@@ -57,7 +57,7 @@ const signup = async (req, res) => {
 
     // Send email
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_ADMIN,
       to: email,
       subject: "Welcome to Arbaz WebCraft!",
       text: `Dear ${firstName},\n\nThank you for creating an account with Arbaz WebCraft. We're excited to have you on board!\n\nRegards,\nThe Arbaz WebCraft Team`,
@@ -90,7 +90,7 @@ const login = async (req, res) => {
       return res
         .status(404)
         .json({ message: "Email not found, please sign up" });
-    }
+    } 
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -106,10 +106,10 @@ const login = async (req, res) => {
 
     // Send welcome back email
     const mailOptions = {
-      from: process.env.EMAIL_USER,
+      from: process.env.EMAIL_ADMIN,
       to: email,
       subject: "Welcome back to Arbaz WebCraft!",
-      text: `Dear ${user.firstName},\n\nYou have successfully logged in to your Arbaz WebCraft account. Welcome back!\n\nRegards,\nThe Arbaz WebCraft Team`,
+      text: `Dear ${user.firstName},\n\nYou have successfully logged in to your Arbaz WebCraft account. Welcome back!\n\nIf this was not you, please contact our support team immediately.\n\nRegards,\nThe Arbaz WebCraft Team`,
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
@@ -133,6 +133,7 @@ const login = async (req, res) => {
 };
 
 // update user role
+// update user role
 const updateUserRole = async (req, res) => {
   const { userId, newRole } = req.body;
 
@@ -147,12 +148,30 @@ const updateUserRole = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // Send email notification about role change
+    const roleMessage = newRole === 'admin' ? 'You are now an admin.' : 'You are now a user.';
+    const mailOptions = {
+      from: process.env.EMAIL_ADMIN,
+      to: user.email,
+      subject: "Role Update Notification",
+      text: `Dear ${user.firstName},\n\nYour role has been updated. ${roleMessage}\n\nRegards,\nThe Arbaz WebCraft Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
     res.status(200).json({ message: "User role updated", user });
   } catch (error) {
     console.error("Error updating user role:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Verify token
 
@@ -164,13 +183,14 @@ const verifyToken = (req, res, next) => {
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
     console.log("Verified Token User:", user);
-    req.userId = user.id;
+    req.userId = user.id; // Set userId in request for authenticated user
     next();
   } catch (err) {
     console.error("Token verification error:", err);
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
 };
+
 
 // Get user
 const getUserInfo = async (req, res) => {
@@ -201,15 +221,45 @@ const getAllUsers = async (req, res) => {
 };
 
 // Logout
+// Logout
 const logout = async (req, res) => {
   try {
+    // Assuming req.userId is set by the verifyToken middleware
+    const userId = req.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
     res.clearCookie("token", { httpOnly: true, sameSite: "Strict" });
+
+    // Send email notification about logout
+    const mailOptions = {
+      from: process.env.EMAIL_ADMIN,
+      to: user.email,
+      subject: "Logout Notification",
+      text: `Dear ${user.firstName},\n\nYou have successfully logged out from your Arbaz WebCraft account.\n\nRegards,\nThe Arbaz WebCraft Team`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log("Error sending email:", error);
+      } else {
+        console.log("Email sent:", info.response);
+      }
+    });
+
     return res.status(200).json({ message: "Successfully logged out" });
   } catch (error) {
     console.error("Error in logout:", error);
     return res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+
 
 module.exports = {
   signup,

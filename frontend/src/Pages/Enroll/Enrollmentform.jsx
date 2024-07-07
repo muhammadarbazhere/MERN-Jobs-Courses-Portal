@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const Enrollmentform = () => {
-  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,10 +18,12 @@ const Enrollmentform = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-      console.log('Form submitted:', formData);
-      navigate('/');
+  const handleSubmit = () => {
+    console.log('Form submitted:', formData);
+
+    setTimeout(() => {
+      window.location.href = '/'; 
+    }, ); 
   };
 
   return (

@@ -35,7 +35,7 @@ function VideoSec() {
 
 
 
-<div onClick={handleEnrollClick} className='bg-gradient-to-r text-md sm:text-lg from-cyan-400 to-blue-600 mt-6 sm:mt-10 w-auto space-x-3 sm:space-x-12 flex px-6 sm:px-6  py-2 sm:py-4 justify-center items-center rounded-md text-white font-[Chivo] mb-2'> 
+<div onClick={handleEnrollClick} className='bg-gradient-to-r text-md sm:text-lg from-cyan-400 to-blue-600 mt-6 sm:mt-10 w-auto space-x-3 sm:space-x-12 flex px-6 sm:px-6  py-2 sm:py-4 justify-center items-center rounded-md text-white font-[Chivo] mb-2 cursor-pointer'> 
   <span className='pl-6 sm:pl-20 text-xl'>Enroll Now </span>  
   <span className=''><FaArrowRight size={20}/></span> 
 </div>

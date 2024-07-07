@@ -12,6 +12,7 @@ import Home from "./Pages/Home/Home";
 import Learning from "./Pages/E-Learning/learning";
 import EnrollNow from "./Pages/Enroll/EnrollNow";
 import Enrollmentform from "./Pages/Enroll/Enrollmentform";
+import JobApplyForm from "./Pages/Enroll/JobApplyForm";
 
 import Navbar from "./Pages/Navbar";
 import DashboardMain from "./Dashboard/MainDashboard/DashboardMain";
@@ -73,6 +74,9 @@ function AppRoutes() {
         <Route path="/learning" element={<Learning />} />
         <Route path="/enroll" element={<EnrollNow />} />
         <Route path="/form" element={<Enrollmentform />} />
+        
+        <Route path="/apply/:jobId" element={<JobApplyForm />} />
+        
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
