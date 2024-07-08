@@ -64,7 +64,7 @@ const UserData = () => {
     }
   };
   return (
-    <div className="ml-24 sm:ml-56 ">
+    <div className="ml-24 sm:ml-56 h-dvh">
       <div className="bg-blue-100 mt-8 p-4 font-[Chivo]">
         <div className="font-bold text-lg flex gap-1 items-center">
           <FaClipboardUser className="" size={20} />

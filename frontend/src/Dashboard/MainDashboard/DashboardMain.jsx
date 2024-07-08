@@ -116,7 +116,7 @@ const Dashboard = () => {
 
   return (
     // h-dvh
-    <div className="flex bg-blue-100 h-full"> 
+    <div className="flex bg-blue-100 h-full "> 
       <AppBar position="fixed" className="bg-black z-10" style={{ zIndex: 12 }}>
         <Toolbar className="bg-blue-500">
           <div style={{ flexGrow: 3 }} />
@@ -131,7 +131,7 @@ const Dashboard = () => {
         </Toolbar>
       </AppBar>
 
-      <aside className="fixed z-30 top-0 left-0 w-40 sm:w-72 h-full bg-green-300 overflow-y-auto">
+      <aside className="fixed z-30 top-0 left-0 w-40 sm:w-72 h-full bg-green-300 ">
         <div className="bg-blue-600 h-16 flex items-center justify-center">
           <h2 className="text-sm sm:text-xl font-bold text-white">COOL ADMIN</h2>
         </div>
