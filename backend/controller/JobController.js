@@ -94,13 +94,4 @@ const deleteJobInternship = async (req, res) => {
   }
 };
 
-// Configure Nodemailer with admin credentials
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_ADMIN,
-    pass: process.env.EMAIL_PASS,
-  },
-});
-
 module.exports = { createJobInternship, getJobsInternships, getJobInternshipById, updateJobInternship, deleteJobInternship, upload};

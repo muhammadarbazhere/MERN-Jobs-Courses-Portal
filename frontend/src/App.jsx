@@ -57,13 +57,17 @@ function AppRoutes() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
   console.log(isLoggedIn);
 
+  const showFooter =
+    isLoggedIn &&
+    location.pathname !== "/dashboard" &&
+    !location.pathname.startsWith("/apply/");
+
   return (
     <>
       {location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />}
       {location.pathname.startsWith("/My") && isLoggedIn && <AdminPanel />}
 
       <Routes>
-        
         <Route
           path="/"
           element={isLoggedIn ? <Home /> : <Navigate to="/signin" />}
@@ -74,17 +78,13 @@ function AppRoutes() {
         <Route path="/learning" element={<Learning />} />
         <Route path="/enroll" element={<EnrollNow />} />
         <Route path="/form" element={<Enrollmentform />} />
-        
-        <Route path="/apply/:jobId" element={<JobApplyForm />} />
-        
+        <Route path="/apply/:id" element={<JobApplyForm />} />
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
 
         {/* ROUTES FOR SECOND NAVBAR */}
-
         <Route path="/MyAdmin" element={<Welcome />} />
-
         <Route path="/MyAddCourse" element={<AddCourse />} />
         <Route path="/MyCourseList" element={<CourseList />} />
         <Route path="/MyAddJobs" element={<AddJobs />} />
@@ -100,13 +100,9 @@ function AppRoutes() {
         <Route path="/MyHR" element={<HumanResource />} />
         <Route path="/MyJobs" element={<Jobs />} />
         <Route path="/MyInternships" element={<Internship />} />
-
-        
-
-
       </Routes>
 
-      {isLoggedIn && location.pathname !== "/dashboard" && <Footer />}
+      {showFooter && <Footer />}
     </>
   );
 }

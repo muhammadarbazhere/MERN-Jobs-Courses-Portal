@@ -10,6 +10,8 @@ const userRoutes = require("./routes/UserRoutes");
 const courseRoutes = require("./routes/CourseRoutes");
 const jobInternshipRoutes = require('./routes/JobRoutes');
 
+const applyJobRoutes = require('./routes/applyJobRoutes');
+
 const app = express();
 const port = 3000;
 
@@ -22,6 +24,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/", userRoutes);
 app.use("/courses", courseRoutes); // Use the course routes
 app.use('/jobs-internships', jobInternshipRoutes);
+app.use("/form", applyJobRoutes);
 
 async function connectDB() {
   try {

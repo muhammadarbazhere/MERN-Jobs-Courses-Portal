@@ -142,7 +142,7 @@ const Dashboard = () => {
               <p>Loading...</p>
             ) : user && user.image ? (
               <img
-                className="sm:w-28 w-10 border border-white border-solid h-10 sm:h-28 rounded-full"
+                className="sm:w-28 w-10 border-2 border-white h-10 sm:h-28 rounded-full"
                 src={`http://localhost:3000/${user.image}`}
                 alt="Profile"
               />
@@ -160,8 +160,8 @@ const Dashboard = () => {
               <p className="text-gray-500">No User Found</p>
             )}
 
-            <button onClick={confirmLogout} className="text-xs mt-2 mb-3 cursor-pointer py-1 px-2 bg-indigo-500 text-white rounded-md
-            shadow-md hover:bg-indigo-600 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out
+            <button onClick={confirmLogout} className="text-xs mt-2 mb-3 cursor-pointer py-1 px-2 bg-teal-700 text-white rounded-md
+            shadow-md hover:bg-teal-800 hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out
             ">
               Sign out
             </button>
@@ -169,8 +169,8 @@ const Dashboard = () => {
           <hr className="my-2" />
 
           <NavLink
-            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black ${
-              activeNavLink === "home" ? "bg-teal-800 text-white" : ""
+            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black hover:transform hover:-translate-y-1 transition-all duration-300 ease-in-out ${
+              activeNavLink === "home" ? " bg-blue-500 text-white" : ""
             }`} 
             onClick={handleShowHome}
           >
@@ -181,8 +181,8 @@ const Dashboard = () => {
           <hr className="my-2" />
 
           <NavLink
-            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black ${
-              activeNavLink === "admins" ? "bg-teal-800 text-white" : ""
+            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black hover:transform hover:-translate-y-1 transition-all duration-300 ${
+              activeNavLink === "admins" ? "bg-blue-500 text-white" : ""
             }`}
             onClick={handleShowAllAdmins} // Show AllAdmins when Admin is clicked
           >
@@ -192,8 +192,8 @@ const Dashboard = () => {
           <hr className="my-2" />
 
           <NavLink
-            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black ${
-              activeNavLink === "users" ? "bg-teal-800 text-white" : ""
+            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black hover:transform hover:-translate-y-1 transition-all duration-300 ${
+              activeNavLink === "users" ? "bg-blue-500 text-white" : ""
             }`}
             onClick={handleShowAllUsers} // Show AllUsers when Users is clicked
           >
@@ -203,8 +203,8 @@ const Dashboard = () => {
           <hr className="my-2" />
 
           <NavLink
-            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black ${
-              activeNavLink === "maps" ? "bg-teal-800 text-white" : ""
+            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black hover:transform hover:-translate-y-1 transition-all duration-300 ${
+              activeNavLink === "maps" ? "bg-blue-500 text-white" : ""
             }`}
             onClick={handleShowMaps}
           >
@@ -213,8 +213,8 @@ const Dashboard = () => {
           </NavLink>
           <hr className="my-2" />
           <NavLink
-            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black ${
-              activeNavLink === "policy" ? "bg-teal-800 text-white" : ""
+            className={`flex items-center sm:py-2 py-1 sm:px-6 px-2 text-base hover:bg-gray-300 hover:text-black hover:transform hover:-translate-y-1 transition-all duration-300 ${
+              activeNavLink === "policy" ? "bg-blue-500 text-white" : ""
             }`}
             onClick={handleShowPolicy}
           >

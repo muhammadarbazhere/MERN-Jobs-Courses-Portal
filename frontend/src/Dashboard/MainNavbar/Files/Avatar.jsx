@@ -110,7 +110,7 @@ function Avatar() {
             <p>Loading...</p>
           ) : user && user.image ? (
             <img
-              className="sm:w-10 w-12 sm:h-10 h-12 rounded-full"
+              className="sm:w-10 w-12 sm:h-10 h-12 rounded-full border border-white "
               src={`http://localhost:3000/${user.image}`}
               alt="Profile"
             />
@@ -132,7 +132,7 @@ function Avatar() {
           aria-labelledby="dropdownHoverButton"
         >
           <li>
-            <a href="#" className="flex gap-3 px-4 py-6">
+            <a className="flex gap-3 px-4 py-6">
               <span className="flex text-md flex-col justify-center font-bold">
                 {user ? (
                   <>

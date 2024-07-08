@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [activeNavLink, setActiveNavLink] = useState("home"); // State to manage active NavLink
   const location = useLocation();
 
   const toggleDrawer = () => {
@@ -51,8 +52,12 @@ function Navbar() {
   
     fetchUserData();
   }, [isLoggedIn]);
-  
-  
+
+  // Function to handle active NavLink change
+  const handleNavLinkClick = (navLink) => {
+    setActiveNavLink(navLink);
+    closeDrawer();
+  };
 
   return (
     <nav className="bg-blue-100 sticky top-0 z-50 text-[#374151] border-gray-200 dark:bg-gray-900">
@@ -70,28 +75,52 @@ function Navbar() {
 
         {isLoggedIn && (
           <div className="hidden md:hidden lg:flex lg:items-center lg:space-x-3 lg:rtl:space-x-reverse font-[Chivo]">
-            <NavLink onClick={closeDrawer} to="/" className="hover:underline">
+            <NavLink
+              onClick={() => handleNavLinkClick("home")}
+              to="/"
+              className={`hover:underline ${activeNavLink === "home" ? "text-blue-500" : ""}`}
+            >
               HOME
             </NavLink>
             <span className="px-2"></span>
-            <NavLink onClick={closeDrawer} to="remoteJobs" className="hover:underline">
+            <NavLink
+              onClick={() => handleNavLinkClick("remoteJobs")}
+              to="remoteJobs"
+              className={`hover:underline ${activeNavLink === "remoteJobs" ? "text-blue-500" : ""}`}
+            >
               REMOTE JOBS
             </NavLink>
             <span className="px-2"></span>
-            <NavLink onClick={closeDrawer} to="outSourcing" className="hover:underline">
+            <NavLink
+              onClick={() => handleNavLinkClick("outSourcing")}
+              to="outSourcing"
+              className={`hover:underline ${activeNavLink === "outSourcing" ? "text-blue-500" : ""}`}
+            >
               BUSINESS OUTSOURCING
             </NavLink>
             <span className="px-2"></span>
-            <NavLink onClick={closeDrawer} to="learning" className="hover:underline">
+            <NavLink
+              onClick={() => handleNavLinkClick("learning")}
+              to="learning"
+              className={`hover:underline ${activeNavLink === "learning" ? "text-blue-500" : ""}`}
+            >
               E-LEARNING
             </NavLink>
             <span className="px-2"></span>
-            <NavLink onClick={closeDrawer} to="about" className="hover:underline">
+            <NavLink
+              onClick={() => handleNavLinkClick("about")}
+              to="about"
+              className={`hover:underline ${activeNavLink === "about" ? "text-blue-500" : ""}`}
+            >
               ABOUT US
             </NavLink>
             <span className="px-2"></span>
             {isAdmin && (
-              <NavLink onClick={closeDrawer} to="MyAdmin" className="hover:underline">
+              <NavLink
+                onClick={() => handleNavLinkClick("MyAdmin")}
+                to="MyAdmin"
+                className={`hover:underline ${activeNavLink === "MyAdmin" ? "text-blue-500" : ""}`}
+              >
                 ADMIN
               </NavLink>
             )}
@@ -107,6 +136,7 @@ function Navbar() {
             <div className=" px-2 sm:px-0 mt-5 sm:mt-0 ">
               {location.pathname === "/signin" && (
                 <NavLink
+                  onClick={() => handleNavLinkClick("signup")}
                   to="/signup"
                   className="bg-gradient-to-r from-cyan-500 to-blue-500 mt-8 sm:mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
@@ -115,6 +145,7 @@ function Navbar() {
               )}
               {location.pathname === "/signup" && (
                 <NavLink
+                  onClick={() => handleNavLinkClick("signin")}
                   to="/signin"
                   className="bg-gradient-to-r from-cyan-500 to-blue-500 mt-3 sm:mt-2 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                 >
@@ -137,23 +168,47 @@ function Navbar() {
       {isLoggedIn && (
         <div className={`${isDrawerOpen ? "block" : "hidden"} block lg:hidden font-[Chivo] transition-all duration-1000 ease-in-out`}>
           <div className="px-1">
-            <NavLink to="/" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black" onClick={closeDrawer}>
+            <NavLink
+              onClick={() => handleNavLinkClick("home")}
+              to="/"
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "home" ? "bg-teal-800" : ""}`}
+            >
               HOME
             </NavLink>
-            <NavLink to="remoteJobs" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white hover:bg-black dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white" onClick={closeDrawer}>
+            <NavLink
+              onClick={() => handleNavLinkClick("remoteJobs")}
+              to="remoteJobs"
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "remoteJobs" ? "bg-teal-800" : ""}`}
+            >
               REMOTE JOBS
             </NavLink>
-            <NavLink to="outSourcing" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white hover:bg-black dark:hover:bg-blue-600 dark:text-gray-200 dark:hover:text-white" onClick={closeDrawer}>
+            <NavLink
+              onClick={() => handleNavLinkClick("outSourcing")}
+              to="outSourcing"
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "outSourcing" ? "bg-teal-800" : ""}`}
+            >
               BUSINESS OUTSOURCING
             </NavLink>
-            <NavLink to="learning" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:hover:bg-gray-600 dark:text-gray-200 hover:bg-black" onClick={closeDrawer}>
+            <NavLink
+              onClick={() => handleNavLinkClick("learning")}
+              to="learning"
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "learning" ? "bg-teal-800" : ""}`}
+            >
               E-LEARNING
             </NavLink>
-            <NavLink to="about" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:hover:bg-gray-600 dark:text-gray-200 hover:bg-black" onClick={closeDrawer}>
+            <NavLink
+              onClick={() => handleNavLinkClick("about")}
+              to="about"
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "about" ? "bg-teal-800" : ""}`}
+            >
               ABOUT US
             </NavLink>
             {isAdmin && (
-              <NavLink to="MyAdmin" className="block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:hover:bg-gray-600 dark:text-gray-200 hover:bg-black" onClick={closeDrawer}>
+              <NavLink
+                onClick={() => handleNavLinkClick("MyAdmin")}
+                to="MyAdmin"
+                className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "MyAdmin" ? "bg-teal-800" : ""}`}
+              >
                 ADMIN
               </NavLink>
             )}
