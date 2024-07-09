@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { TiThMenu } from "react-icons/ti";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { TiThMenu, TiTimes } from "react-icons/ti"; // Import the cross icon
+import { FaShoppingCart } from "react-icons/fa"; // Import the shopping cart icon
 import logo from "../assets/logo.jpg";
 import Avatar from "../Dashboard/MainNavbar/Files/Avatar";
 import { useSelector } from "react-redux";
@@ -10,6 +11,7 @@ function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [activeNavLink, setActiveNavLink] = useState("home"); // State to manage active NavLink
   const location = useLocation();
+  const navigate = useNavigate()
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -20,25 +22,26 @@ function Navbar() {
   };
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
+  const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/user', {
-          method: 'GET',
+        const response = await fetch("http://localhost:3000/user", {
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          credentials: "include"
+          credentials: "include",
         });
-  
+
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-  
+
         const data = await response.json();
         console.log("User data:", data);
-        
+
         if (data.user.role === "admin") {
           setIsAdmin(true);
         } else {
@@ -49,7 +52,7 @@ function Navbar() {
         setIsAdmin(false);
       }
     };
-  
+
     fetchUserData();
   }, [isLoggedIn]);
 
@@ -59,11 +62,18 @@ function Navbar() {
     closeDrawer();
   };
 
+  const handleCart = () => {
+    navigate('/cart')
+  }
+
   return (
     <nav className="bg-blue-100 sticky top-0 z-50 text-[#374151] border-gray-200 dark:bg-gray-900">
       <div className="w-full xl:px-24 flex flex-wrap flex-row md:flex-row md:items-center items-start justify-between text-[#374151] mx-0 lg:mx-0 px-2">
         <div className="flex items-center">
-          <NavLink to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+          <NavLink
+            to="/"
+            className="flex items-center space-x-3 rtl:space-x-reverse"
+          >
             <img src={logo} className="h-16 w-16" alt="Arbaz WebCraft" />
           </NavLink>
           {!isLoggedIn && (
@@ -78,7 +88,9 @@ function Navbar() {
             <NavLink
               onClick={() => handleNavLinkClick("home")}
               to="/"
-              className={`hover:underline ${activeNavLink === "home" ? "text-blue-500" : ""}`}
+              className={`hover:underline ${
+                activeNavLink === "home" ? "text-blue-500" : ""
+              }`}
             >
               HOME
             </NavLink>
@@ -86,7 +98,9 @@ function Navbar() {
             <NavLink
               onClick={() => handleNavLinkClick("remoteJobs")}
               to="remoteJobs"
-              className={`hover:underline ${activeNavLink === "remoteJobs" ? "text-blue-500" : ""}`}
+              className={`hover:underline ${
+                activeNavLink === "remoteJobs" ? "text-blue-500" : ""
+              }`}
             >
               REMOTE JOBS
             </NavLink>
@@ -94,7 +108,9 @@ function Navbar() {
             <NavLink
               onClick={() => handleNavLinkClick("outSourcing")}
               to="outSourcing"
-              className={`hover:underline ${activeNavLink === "outSourcing" ? "text-blue-500" : ""}`}
+              className={`hover:underline ${
+                activeNavLink === "outSourcing" ? "text-blue-500" : ""
+              }`}
             >
               BUSINESS OUTSOURCING
             </NavLink>
@@ -102,7 +118,9 @@ function Navbar() {
             <NavLink
               onClick={() => handleNavLinkClick("learning")}
               to="learning"
-              className={`hover:underline ${activeNavLink === "learning" ? "text-blue-500" : ""}`}
+              className={`hover:underline ${
+                activeNavLink === "learning" ? "text-blue-500" : ""
+              }`}
             >
               E-LEARNING
             </NavLink>
@@ -110,7 +128,9 @@ function Navbar() {
             <NavLink
               onClick={() => handleNavLinkClick("about")}
               to="about"
-              className={`hover:underline ${activeNavLink === "about" ? "text-blue-500" : ""}`}
+              className={`hover:underline ${
+                activeNavLink === "about" ? "text-blue-500" : ""
+              }`}
             >
               ABOUT US
             </NavLink>
@@ -119,7 +139,9 @@ function Navbar() {
               <NavLink
                 onClick={() => handleNavLinkClick("MyAdmin")}
                 to="MyAdmin"
-                className={`hover:underline ${activeNavLink === "MyAdmin" ? "text-blue-500" : ""}`}
+                className={`hover:underline ${
+                  activeNavLink === "MyAdmin" ? "text-blue-500" : ""
+                }`}
               >
                 ADMIN
               </NavLink>
@@ -130,6 +152,17 @@ function Navbar() {
         <div className="flex flex-row sm:flex-row md:flex-row items-center md:order-3 space-x-3 rtl:space-x-reverse">
           {isLoggedIn ? (
             <>
+               <FaShoppingCart
+                onClick={handleCart}
+                size={24}
+                className="text-[#374151] cursor-pointer relative"
+              />
+              {cartItems.length > 0 && (
+                <span className="bg-purple-500 text-white rounded-full px-2 py-1 text-xs absolute top-1 t xl:right-44 md:right-32 lg:right-20">
+                  {cartItems.length}
+                </span>
+              )}
+            
               <Avatar />
             </>
           ) : (
@@ -160,46 +193,60 @@ function Navbar() {
               onClick={toggleDrawer}
               className="lg:hidden text-[#374151] m-2 p-1 rounded-md border-2 border-gray-400"
             >
-              <TiThMenu size={30} />
+              {isDrawerOpen ? <TiTimes size={30} /> : <TiThMenu size={30} />}
             </button>
           )}
         </div>
       </div>
       {isLoggedIn && (
-        <div className={`${isDrawerOpen ? "block" : "hidden"} block lg:hidden font-[Chivo] transition-all duration-1000 ease-in-out`}>
+        <div
+          className={`${
+            isDrawerOpen ? "block" : "hidden"
+          } block lg:hidden font-[Chivo] transition-all duration-1000 ease-in-out`}
+        >
           <div className="px-1">
             <NavLink
               onClick={() => handleNavLinkClick("home")}
               to="/"
-              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "home" ? "bg-teal-800" : ""}`}
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                activeNavLink === "home" ? "bg-teal-800" : ""
+              }`}
             >
               HOME
             </NavLink>
             <NavLink
               onClick={() => handleNavLinkClick("remoteJobs")}
               to="remoteJobs"
-              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "remoteJobs" ? "bg-teal-800" : ""}`}
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                activeNavLink === "remoteJobs" ? "bg-teal-800" : ""
+              }`}
             >
               REMOTE JOBS
             </NavLink>
             <NavLink
               onClick={() => handleNavLinkClick("outSourcing")}
               to="outSourcing"
-              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "outSourcing" ? "bg-teal-800" : ""}`}
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                activeNavLink === "outSourcing" ? "bg-teal-800" : ""
+              }`}
             >
               BUSINESS OUTSOURCING
             </NavLink>
             <NavLink
               onClick={() => handleNavLinkClick("learning")}
               to="learning"
-              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "learning" ? "bg-teal-800" : ""}`}
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                activeNavLink === "learning" ? "bg-teal-800" : ""
+              }`}
             >
               E-LEARNING
             </NavLink>
             <NavLink
               onClick={() => handleNavLinkClick("about")}
               to="about"
-              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "about" ? "bg-teal-800" : ""}`}
+              className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                activeNavLink === "about" ? "bg-teal-800" : ""
+              }`}
             >
               ABOUT US
             </NavLink>
@@ -207,7 +254,9 @@ function Navbar() {
               <NavLink
                 onClick={() => handleNavLinkClick("MyAdmin")}
                 to="MyAdmin"
-                className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${activeNavLink === "MyAdmin" ? "bg-teal-800" : ""}`}
+                className={`block bg-blue-600 px-4 py-3 mb-1 rounded-lg text-md text-white dark:text-gray-200 hover:bg-black ${
+                  activeNavLink === "MyAdmin" ? "bg-teal-800" : ""
+                }`}
               >
                 ADMIN
               </NavLink>

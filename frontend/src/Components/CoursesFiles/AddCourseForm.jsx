@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import logo from "../../assets/logo.jpg";
 
 function AddCourseForm() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: "",
+    author: "", // Added author field
     description: "",
     category: "",
     duration: "",
@@ -36,6 +38,7 @@ function AddCourseForm() {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
+      formDataToSend.append("author", formData.author); // Append author
       formDataToSend.append("description", formData.description);
       formDataToSend.append("category", formData.category);
       formDataToSend.append("duration", formData.duration);
@@ -58,13 +61,14 @@ function AddCourseForm() {
       toast.success("Course added successfully!");
       setFormData({
         title: "",
+        author: "",
         description: "",
         category: "",
         duration: "",
         charges: "",
         image: null,
       }); // Clear form data
-      // navigate("/MyCourseList");
+       navigate("/MyCourseList");
       console.log(result);
     } catch (error) {
       toast.error("Error adding the course. Please try again.");
@@ -93,6 +97,24 @@ function AddCourseForm() {
               name="title"
               placeholder="Course Title ..*"
               value={formData.title}
+              onChange={handleChange}
+              required
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              htmlFor="author"
+              className="block text-gray-700 text-sm font-bold mb-2"
+            >
+              Author
+            </label>
+            <input
+              type="text"
+              id="author"
+              name="author"
+              placeholder="Course Author ..*"
+              value={formData.author}
               onChange={handleChange}
               required
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -182,8 +204,8 @@ function AddCourseForm() {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
-           {/* New file input for image upload */}
-           <div className="mb-4">
+          {/* New file input for image upload */}
+          <div className="mb-4">
             <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-2">
               Course Image
             </label>
@@ -213,6 +235,7 @@ function AddCourseForm() {
             disabled={
               loading ||
               !formData.title ||
+              !formData.author || // Ensure author is filled
               !formData.description ||
               !formData.category ||
               !formData.charges ||
@@ -221,6 +244,7 @@ function AddCourseForm() {
             className={`bg-blue-500 ${
               loading ||
               !formData.title ||
+              !formData.author || // Ensure author is filled
               !formData.description ||
               !formData.category ||
               !formData.charges ||

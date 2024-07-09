@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import logo from '../../assets/logo.jpg';
+import { MdOutlineCancelPresentation } from "react-icons/md";
+
 
 const EditCourse = () => {
   const { id } = useParams();
@@ -10,6 +12,7 @@ const EditCourse = () => {
 
   const [updateData, setUpdateData] = useState({
     title: '',
+    author: '',
     description: '',
     category: '',
     charges: '',
@@ -30,6 +33,7 @@ const EditCourse = () => {
         // Update the state with the fetched course data
         setUpdateData({
           title: data.title,
+          author: data.author,
           description: data.description,
           category: data.category,
           charges: data.charges,
@@ -62,6 +66,7 @@ const EditCourse = () => {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append("title", updateData.title);
+      formDataToSend.append("author", updateData.author);
       formDataToSend.append("description", updateData.description);
       formDataToSend.append("category", updateData.category);
       formDataToSend.append("charges", updateData.charges);
@@ -88,11 +93,25 @@ const EditCourse = () => {
   if (isLoading) {
     return <div>Loading...</div>; // Show loading message while data is being fetched
   }
+  const handleCancelEdit = () => {
+    navigate("/MyCourseList"); // Navigate back to the course list page
+  };
 
   return (
     <div className="bg-blue-100 py-20">
       <div className="mx-auto w-full md:w-2/3 lg:w-1/2">
         <div className="bg-white shadow-md rounded px-8 pt-6 pb-8">
+
+<div className="flex items-end justify-end">
+        <button
+            onClick={handleCancelEdit}
+            className=" text-black  font-bold py-2 px-4 rounded mb-4 focus:outline-none focus:shadow-outline"
+          >
+            <MdOutlineCancelPresentation fontSize={30}/>
+          </button>
+  
+  </div>
+
           <h1 className="text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 text-3xl font-bold text-white flex items-center justify-center space-x-3 py-6 text-center mb-2">
             <h2>
               Update
@@ -114,6 +133,17 @@ const EditCourse = () => {
                 name="title"
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 value={updateData.title}
+                onChange={newData}
+              />
+            </div>
+            <div className="mb-4">
+              <label htmlFor="author" className="block text-gray-700 text-sm font-bold mb-2">Author</label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                value={updateData.author}
                 onChange={newData}
               />
             </div>

@@ -42,6 +42,7 @@ import Signup from "./AuthComponents/Signup";
 import { useSelector } from "react-redux";
 import Login from "./AuthComponents/Login";
 import Welcome from "./Pages/Admin/Welcome";
+import Cart from './Pages/Cart'
 
 function App() {
   return (
@@ -82,6 +83,7 @@ function AppRoutes() {
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
+        <Route path="/cart" element={<Cart />} />
 
         {/* ROUTES FOR SECOND NAVBAR */}
         <Route path="/MyAdmin" element={<Welcome />} />

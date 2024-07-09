@@ -19,6 +19,7 @@ const createCourse = async (req, res) => {
     try {
       const {
         title,
+        author,
         description,
         category,
         duration,
@@ -27,6 +28,7 @@ const createCourse = async (req, res) => {
   
       const course = new Course({
         title,
+        author,
         description,
         category,
         duration,
@@ -66,11 +68,11 @@ const getCourseById = async (req, res) => {
 
 const updateCourse = async (req, res) => {
   const { id } = req.params;
-  const { title, description, category, duration, charges } = req.body;
+  const { title, author, description, category, duration, charges } = req.body;
   let image = req.file ? req.file.path : null;
 
   try {
-    const updatedData = { title, description, category, duration, charges };
+    const updatedData = { title, author, description, category, duration, charges };
     if (image) updatedData.image = image;
 
     const updatedCourse = await Course.findByIdAndUpdate(

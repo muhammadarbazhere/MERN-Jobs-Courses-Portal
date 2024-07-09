@@ -4,13 +4,12 @@ import { IoPersonAddSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { authActions } from "../../../App/AuthSlice";
 import { useNavigate } from "react-router-dom";
-import { VscDebugStepBack } from "react-icons/vsc";
+import { FaShoppingCart } from "react-icons/fa";
 import { RxDashboard } from "react-icons/rx";
 
 function Avatar() {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const openDropdown = () => {
     setIsDropdownOpen(true);
@@ -31,6 +30,7 @@ function Avatar() {
   }, []);
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
+  const cartItems = useSelector((state) => state.cart.items);
 
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
@@ -159,6 +159,27 @@ function Avatar() {
               <hr />
             </>
           )}
+          <li>
+            <a
+              href="/cart"
+              className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white duration-1000"
+            >
+              <span>
+                <FaShoppingCart size={20} />
+              </span>
+              <div className="flex justify-between gap-20 lg:gap-24">
+                <p>My Cart</p>
+                <p className="bg-purple-500 text-white rounded-full">
+                  {cartItems.length > 0 && (
+                    <span className=" px-2 py-1 text-xs">
+                      {cartItems.length}
+                    </span>
+                  )}
+                </p>
+              </div>
+            </a>
+          </li>
+          <hr />
           <li>
             <a
               href="/signup"

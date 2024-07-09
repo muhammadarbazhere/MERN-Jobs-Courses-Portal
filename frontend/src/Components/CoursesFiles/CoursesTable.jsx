@@ -74,12 +74,6 @@ const CoursesTable = () => {
               <th className="bg-[#5F9BCE]  text-white text-left   md:px-8 px-2 py-4 text-xs sm:text-base">
                 Description
               </th>
-              <th className="bg-[#5F9BCE]  text-left text-white lg:px-8 px-2 py-4 text-xs sm:text-base">
-                Duration
-              </th>
-              <th className="bg-[#5F9BCE] text-white text-left lg:px-8 px-2 py-4 text-xs sm:text-base">
-                Price
-              </th>
               <th className="bg-[#5F9BCE] text-white text-left lg:px-8 px-2 py-4 text-xs sm:text-base">
                 {" "}
               </th>
@@ -98,12 +92,6 @@ const CoursesTable = () => {
                   <td className="text-gray-500 lg:px-8 px-2 py-4 text-xs sm:text-base">
                     {item.description}
                   </td>
-                  <td className="text-gray-500 lg:px-8 px-2 py-4 text-xs sm:text-base">
-                    {item.duration}
-                  </td>
-                  <td className="text-gray-500 lg:px-8 px-2 py-4 text-xs sm:text-base">
-                    ${item.charges}
-                  </td>
                   <td className="text-gray-500 flex gap-1 lg:px-8 px-2 py-4 text-xs sm:text-base">
                     <Link to={`/MyEdit/${item._id}`}>
                       <MdModeEdit size={8} className="block md:hidden" />
@@ -117,7 +105,7 @@ const CoursesTable = () => {
                 </tr>
 
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="7">
                     <div className="border"></div>
                   </td>
                 </tr>

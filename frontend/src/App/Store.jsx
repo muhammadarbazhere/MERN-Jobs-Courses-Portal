@@ -1,8 +1,10 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+// store.js
+import { configureStore } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { combineReducers } from 'redux';
-import authReducer from "./AuthSlice";
+import authReducer from './AuthSlice';
+import cartReducer from './CartSlice';
 
 const persistConfig = {
   key: 'root',
@@ -11,6 +13,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   auth: authReducer,
+  cart: cartReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
