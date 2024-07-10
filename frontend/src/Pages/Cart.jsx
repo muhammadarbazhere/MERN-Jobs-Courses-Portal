@@ -5,6 +5,7 @@ import { removeFromCart } from "../App/CartSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CoursesList from "../Components/CoursesFiles/CoursesList";
+import { useNavigate } from "react-router-dom";
 
 function Cart() {
   const cart = useSelector((state) => state.cart.items);
@@ -35,6 +36,13 @@ function Cart() {
   const originalTotal = total * 5.70;
   const discountPercentage = (1 - discountedTotal / originalTotal) * 100;
 
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate('/checkout', { state: { discount } });
+  };
+
+
   return (
     <div className="bg-blue-100 pb-10">
       <div className="font-[Chivo] py-10 px-4 lg:px-6 xl:px-20">
@@ -54,7 +62,7 @@ function Cart() {
             </p>
             <a
               href="/learning"
-              className="bg-teal-700 text-white py-2 px-4 rounded-md hover:bg-teal-800 duration-300"
+              className="bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-teal-800 duration-300"
             >
               Keep Shopping
             </a>
@@ -81,13 +89,13 @@ function Cart() {
                         <div className="flex space-x-2 hidden md:block">
                           <button
                             onClick={() => handleRemoveFromCart(course._id)}
-                            className="text-purple-800 hover:text-purple-950 flex items-center"
+                            className="text-pink-600 hover:text-pink-800 flex items-center"
                           >
                             <FaRegTrashAlt className="mr-1" />
                             Remove
                           </button>
                         </div>
-                        <p className="text-purple-500 font-semibold text-base sm:text-lg mb-1">
+                        <p className="text-pink-600 font-semibold text-base sm:text-lg mb-1">
                           ${course.charges}
                         </p>
                       </p>
@@ -108,7 +116,7 @@ function Cart() {
                       <div className="flex space-x-2 block md:hidden">
                         <button
                           onClick={() => handleRemoveFromCart(course._id)}
-                          className="text-purple-800 hover:text-purple-950 flex items-center"
+                          className="text-pink-600 hover:text-pink-800 flex items-center"
                         >
                           <FaRegTrashAlt className="mr-1" />
                           Remove
@@ -132,7 +140,7 @@ function Cart() {
               <p className="text-gray-600 mb-2">
                 {discountPercentage.toFixed(2)}% off
               </p>
-              <button className="bg-purple-500 text-white w-full py-2 rounded-md hover:bg-purple-600 duration-200 mb-2">
+              <button onClick={handleCheckout} className="bg-pink-600 text-white w-full py-2 rounded-md hover:bg-pink-700 duration-200 mb-2">
                 Checkout
               </button>
               {discount > 0 && (
@@ -153,7 +161,7 @@ function Cart() {
                 />
                 <button
                   onClick={handleApplyCoupon}
-                  className="bg-purple-500 text-white px-3 rounded-md hover:bg-purple-600 duration-300"
+                  className="bg-pink-600 text-white px-3 rounded-md hover:bg-pink-700 duration-300"
                 >
                   Apply
                 </button>
@@ -164,8 +172,8 @@ function Cart() {
           </div>
         )}
       </div>
-      <div className="w-full space-y-1 pt-6 pb-4 lg:px-6 xl:px-20 flex flex-col items-start md:px-2">
-        <p className="font-[Chivo] text-md font-bold sm:text-3xl text-[#272727]">
+      <div className="w-full mt-8 sm:mt-0 px-2 sm:px-0 space-y-1 pt-6 pb-4 lg:px-6 xl:px-20 flex flex-col items-start md:px-2">
+        <p className="font-[Chivo] px-3 lg:px-0 text-md font-bold sm:text-3xl text-[#272727]">
           You might also like
         </p>
       </div>

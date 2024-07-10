@@ -148,14 +148,14 @@ function Avatar() {
           <hr />
           {isAdmin && (
             <>
-              <li>
+              <a  href="/dashboard">
                 <div className="flex gap-3 cursor-pointer px-4 py-4 hover:bg-[#4272D7] hover:text-white duration-1000 ">
                   <span>
                     <RxDashboard size={20} />
                   </span>
-                  <a href="/dashboard">Back To Main</a>
+                  <a>Dashboard</a>
                 </div>
-              </li>
+              </a>
               <hr />
             </>
           )}
@@ -169,7 +169,7 @@ function Avatar() {
               </span>
               <div className="flex justify-between gap-20 lg:gap-24">
                 <p>My Cart</p>
-                <p className="bg-purple-500 text-white rounded-full">
+                <p className="bg-pink-600 text-white rounded-full">
                   {cartItems.length > 0 && (
                     <span className=" px-2 py-1 text-xs">
                       {cartItems.length}

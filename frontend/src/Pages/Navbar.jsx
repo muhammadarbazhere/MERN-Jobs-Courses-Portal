@@ -63,21 +63,28 @@ function Navbar() {
   };
 
   const handleCart = () => {
-    navigate('/cart')
-  }
+    setActiveNavLink('cart')
+     navigate('/cart')
+ 
+  };
+  const handleLogoClicked = () => {
+    setTimeout(() => {
+      window.location.href = '/'; 
+    }, ); 
+  };
 
   return (
     <nav className="bg-blue-100 sticky top-0 z-50 text-[#374151] border-gray-200 dark:bg-gray-900">
       <div className="w-full xl:px-24 flex flex-wrap flex-row md:flex-row md:items-center items-start justify-between text-[#374151] mx-0 lg:mx-0 px-2">
         <div className="flex items-center">
           <NavLink
-            to="/"
+          onClick={handleLogoClicked}
             className="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <img src={logo} className="h-16 w-16" alt="Arbaz WebCraft" />
           </NavLink>
           {!isLoggedIn && (
-            <h1 className="font-[Chivo] text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-3xl sm:text-2xl xl:text-3xl">
+            <h1 className="font-bold text-transparent bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-3xl sm:text-2xl xl:text-3xl">
               Arbaz WebCraft
             </h1>
           )}
@@ -155,10 +162,13 @@ function Navbar() {
                <FaShoppingCart
                 onClick={handleCart}
                 size={24}
-                className="text-[#374151] cursor-pointer relative"
+                
+                className={`text-[#374151] cursor-pointer relative ${
+                  activeNavLink === "cart" ? "text-blue-500" : ""
+                }`}
               />
               {cartItems.length > 0 && (
-                <span className="bg-purple-500 text-white rounded-full px-2 py-1 text-xs absolute top-1 t xl:right-44 md:right-32 lg:right-20">
+                <span className="bg-pink-600 text-white rounded-full px-2 py-1 text-xs absolute top-1 t xl:right-44 md:right-32 lg:right-20">
                   {cartItems.length}
                 </span>
               )}

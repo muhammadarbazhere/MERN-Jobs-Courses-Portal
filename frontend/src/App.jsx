@@ -43,6 +43,8 @@ import { useSelector } from "react-redux";
 import Login from "./AuthComponents/Login";
 import Welcome from "./Pages/Admin/Welcome";
 import Cart from './Pages/Cart'
+import Checkout from './Pages/Checkout'
+import Policy from './Pages/Policy'
 
 function App() {
   return (
@@ -61,11 +63,18 @@ function AppRoutes() {
   const showFooter =
     isLoggedIn &&
     location.pathname !== "/dashboard" &&
-    !location.pathname.startsWith("/apply/");
+    !location.pathname.startsWith("/My") &&
+    !location.pathname.startsWith("/apply/") &&
+    !location.pathname.startsWith("/checkout") &&
+    !location.pathname.startsWith("/signup") &&
+    !location.pathname.startsWith("/signin") &&
+    !location.pathname.startsWith("/policy");
+
+    const showNavbar = !location.pathname.startsWith("/checkout");
 
   return (
     <>
-      {location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />}
+       {showNavbar && (location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />)}
       {location.pathname.startsWith("/My") && isLoggedIn && <AdminPanel />}
 
       <Routes>
@@ -80,10 +89,14 @@ function AppRoutes() {
         <Route path="/enroll" element={<EnrollNow />} />
         <Route path="/form" element={<Enrollmentform />} />
         <Route path="/apply/:id" element={<JobApplyForm />} />
+
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
         <Route path="/cart" element={<Cart />} />
+        
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/policy" element={<Policy />} />
 
         {/* ROUTES FOR SECOND NAVBAR */}
         <Route path="/MyAdmin" element={<Welcome />} />
