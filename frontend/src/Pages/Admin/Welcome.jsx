@@ -52,7 +52,7 @@ function Welcome() {
   }, []);
 
   return (
-    <div className="font-[Chivo] px-10 py-28 bg-blue-100">
+    <div className="font-[Chivo] px-10 py-28  h-dvh bg-blue-100">
       <div className="text-blue-400 flex items-center justify-center">
         <h1
           id="welcome"

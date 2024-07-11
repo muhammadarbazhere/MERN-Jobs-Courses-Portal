@@ -109,11 +109,15 @@ function Avatar() {
           {loading ? (
             <p>Loading...</p>
           ) : user && user.image ? (
-            <img
-              className="sm:w-10 w-12 sm:h-10 h-12 rounded-full border border-white "
+          <p>
+              <img
+              className="sm:w-10 w-12 sm:h-10 h-12 rounded-full border border-white relative"
               src={`http://localhost:3000/${user.image}`}
               alt="Profile"
             />
+            <span className="bg-green-400 text-white rounded-full px-2 py-2 text-xs absolute top-0 t right-0">
+            </span>
+          </p>
           ) : (
             <p className="text-gray-500">Loading...</p>
           )}
