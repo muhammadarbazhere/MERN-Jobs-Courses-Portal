@@ -1,5 +1,4 @@
 const Cart = require("../model/cartModel");
-const Course = require("../model/CourseSchema");
 
 // Add course to cart
 const addToCart = async (req, res) => {
@@ -33,8 +32,8 @@ const addToCart = async (req, res) => {
 
 // Remove course from cart
 const removeFromCart = async (req, res) => {
-  const userId = req.userId; // Assuming userId is set by verifyToken middleware
-  const courseId = req.params.id; // Assuming course ID is passed as a URL parameter
+  const userId = req.userId; 
+  const courseId = req.params.id; 
 
   try {
     const cart = await Cart.findOne({ user: userId });

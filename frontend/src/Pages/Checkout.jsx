@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
 import {
   FaCcVisa,
   FaCcMastercard,
@@ -12,10 +11,10 @@ import { CiGlobe } from "react-icons/ci";
 import { FaCreditCard } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
 import countries from "./countries"; // Adjust the path as needed
-import logo from '../assets/logo.jpg'
+import logo from '../assets/logo.jpg';
 
 function Checkout() {
-  const cart = useSelector((state) => state.cart.items);
+  const [cart, setCart] = useState([]);
   const location = useLocation();
   const { discount } = location.state || { discount: 0 }; // Get discount from state
 
@@ -29,6 +28,41 @@ function Checkout() {
     cvc: "",
   });
 
+  useEffect(() => {
+    fetchCartItems(); // Fetch cart items on component mount
+  }, []);
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/getUserCart", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
+      }
+
+      const data = await response.json();
+      const formattedCart = data.map((item) => ({
+        _id: item.course._id,
+        title: item.course.title,
+        description: item.course.description,
+        charges: item.course.charges,
+        author: item.course.author,
+        duration: item.course.duration,
+        image: item.course.image,
+      }));
+
+      setCart(formattedCart);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setPaymentDetails({
@@ -38,10 +72,10 @@ function Checkout() {
   };
 
   const handleCheckout = (e) => {
-    // Here you can handle the checkout process, such as validating input and sending the data to the backend
+    // Handle the checkout process
     setTimeout(() => {
-        window.location.href = '/learning'; 
-      }, ); 
+      window.location.href = '/learning';
+    });
     setPaymentDetails({
       nameOnCard: "",
       cardNumber: "",
@@ -57,8 +91,8 @@ function Checkout() {
 
   const handleCancel = () => {
     setTimeout(() => {
-      window.location.href = '/cart'; 
-    }, ); 
+      window.location.href = '/cart';
+    });
   };
 
   return (
