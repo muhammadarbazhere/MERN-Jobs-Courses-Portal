@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '../../App/CartSlice'; // Adjust the path if necessary
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { FaChevronLeft, FaChevronRight, FaRegTrashAlt } from 'react-icons/fa';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FaArrowTrendUp } from 'react-icons/fa6';
-import { FaArrowRight } from 'react-icons/fa';
 
 function Courses() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(4);
-  const [users, setUsers] = useState([]);
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
-  const myCardsState = useSelector(state => state.cart.items); // Assuming your cart slice is named 'cart'
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     fetchCourses();
@@ -28,7 +24,7 @@ function Courses() {
         throw new Error('Failed to fetch courses');
       }
       const data = await response.json();
-      setUsers(data);
+      setCourses(data);
       setLoading(false);
     } catch (error) {
       setError(error.message);
@@ -36,30 +32,44 @@ function Courses() {
     }
   };
 
-  // Get current users
+  // Get current courses to display
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentUsers = users.slice(indexOfFirstPost, indexOfLastPost);
+  const currentCourses = courses.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Change page
+  // Pagination function
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const handleAddToCart = (course) => {
-    // Check if the course is already in the cart
-    const isAlreadyInCart = myCardsState.some(item => item._id === course._id);
+  // Add course to cart
+  const handleAddToCart = async (course) => {
+    try {
+      const response = await fetch('http://localhost:3000/addCart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ courseId: course._id }),
+        credentials: 'include',
+      });
 
-    if (!isAlreadyInCart) {
-      dispatch(addToCart(course));
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to add course to cart');
+      }
+
+      console.log('Course added to cart:', data);
+      setCartItems(prevItems => [...prevItems, course]);
       toast.success(`${course.title} added to cart!`);
-    } else {
-      toast.warn(`${course.title} is already in your cart!`);
+      
+    } catch (error) {
+      toast.error(`Failed to add ${course.title} to cart: ${error.message}`);
+      console.error('Error adding course to cart:', error);
     }
   };
+  
 
   return (
-    <div className="font-[Chivo] bg-blue-100  px-4 lg:px-6 xl:px-20">
-      
-
+    <div className="font-[Chivo] bg-blue-100 px-4 lg:px-6 xl:px-20">
       {loading && (
         <div className="flex items-center justify-center mt-10">
           <div className="w-6 h-6 mr-3 border-t-2 border-b-2 border-gray-500 rounded-full animate-spin"></div>
@@ -74,15 +84,15 @@ function Courses() {
       )}
       <ToastContainer />
 
-      {users.length === 0 ? (
-        <div className="flex justify-center h-full ">
+      {!loading && courses.length === 0 ? (
+        <div className="flex justify-center h-full">
           <p className="text-lg text-center pt-12 text-gray-700 font-bold">
             No courses available
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-3 ">
-          {currentUsers.map((course) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-3">
+          {currentCourses.map((course) => (
             <div
               key={course._id}
               className="w-full sm:max-w-sm rounded-md overflow-hidden bg-white mb-6 border-2 border-white shadow-lg transform transition-all hover:scale-105"
@@ -106,17 +116,15 @@ function Courses() {
                   {course.description}
                 </p>
 
-                <div className="flex items-center justify-start gap-2 ">
-                
+                <div className="flex items-center justify-start gap-2">
                   <p className="font-bold text-gray-800 text-end text-xl">
                     ${course.charges}
                   </p>
                   <p className="font-bold line-through text-gray-600 text-end text-base">
-                  ${(course.charges * 5.70).toFixed(2)}
+                    ${(course.charges * 5.70).toFixed(2)}
                   </p>
                 </div>
 
-                {/* Enroll button */}
                 <button
                   onClick={() => handleAddToCart(course)}
                   className="bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 flex rounded-md text-white font-[Chivo] my-2 w-full text-center items-center justify-center"
@@ -141,7 +149,7 @@ function Courses() {
           <FaChevronLeft />
         </button>
         {Array.from(
-          { length: Math.ceil(users.length / postsPerPage) },
+          { length: Math.ceil(courses.length / postsPerPage) },
           (_, i) => (
             <button
               key={i}
@@ -160,12 +168,12 @@ function Courses() {
           className="mx-1 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"
           onClick={() =>
             setCurrentPage(
-              currentPage === Math.ceil(users.length / postsPerPage)
+              currentPage === Math.ceil(courses.length / postsPerPage)
                 ? currentPage
                 : currentPage + 1
             )
           }
-          disabled={currentPage === Math.ceil(users.length / postsPerPage)}
+          disabled={currentPage === Math.ceil(courses.length / postsPerPage)}
         >
           <FaChevronRight />
         </button>

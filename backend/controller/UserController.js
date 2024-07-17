@@ -177,19 +177,23 @@ const updateUserRole = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
+  console.log('Token:', token); // Log the token for debugging
+
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
   }
+
   try {
     const user = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Verified Token User:", user);
-    req.userId = user.id; // Set userId in request for authenticated user
+    req.userId = user.id;
     next();
   } catch (err) {
     console.error("Token verification error:", err);
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
 };
+
+
 
 
 // Get user

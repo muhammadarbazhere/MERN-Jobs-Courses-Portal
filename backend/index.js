@@ -11,12 +11,11 @@ const courseRoutes = require("./routes/CourseRoutes");
 const jobInternshipRoutes = require('./routes/JobRoutes');
 
 const applyJobRoutes = require('./routes/applyJobRoutes');
-const cartRoutes = require('./routes/cartRoutes');
 
 const app = express();
 const port = 3000;
 
-app.use(cors({ credentials: true, origin: "http://localhost:5173" })); // Ensure origin is correct
+app.use(cors({ credentials: true, origin: true })); // Ensure all origins
 app.use(cookieParser());
 app.use(express.json());
 
@@ -24,7 +23,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/", userRoutes);
 app.use("/courses", courseRoutes);
-app.use("/cart", cartRoutes); 
 app.use('/jobs-internships', jobInternshipRoutes);
 app.use("/form", applyJobRoutes);
 

@@ -1,22 +1,84 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { removeFromCart } from "../App/CartSlice";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CoursesList from "../Components/CoursesFiles/CoursesList";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const cart = useSelector((state) => state.cart.items);
-  const dispatch = useDispatch();
+  const [cart, setCart] = useState([]);
   const [coupon, setCoupon] = useState("");
   const [error, setError] = useState("");
   const [discount, setDiscount] = useState(0);
+  const navigate = useNavigate();
 
-  const handleRemoveFromCart = (courseId) => {
-    dispatch(removeFromCart(courseId));
-    toast.success("Course removed from cart!");
+  useEffect(() => {
+    fetchCartItems(); // Pass stored token to fetchCartItems
+  }, []);
+
+  const fetchCartItems = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/getUserCart", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch cart items");
+      }
+
+      const data = await response.json();
+      console.log(data);
+
+      // Map each item in the cart to the format expected by your component
+      const formattedCart = data.map((item) => ({
+        _id: item.course._id,
+        title: item.course.title,
+        description: item.course.description,
+        charges: item.course.charges,
+        author: item.course.author,
+        duration: item.course.duration,
+        image: item.course.image,
+      }));
+
+      setCart(formattedCart);
+    } catch (error) {
+      console.error("Error fetching cart items:", error);
+    }
+  };
+
+  const handleRemoveFromCart = async (courseId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/deleteCart/${courseId}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+            // Include the token from cookies
+            "Authorization": `Bearer ${document.cookie.split('=')[1]}`,
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to remove course from cart.");
+      }
+
+      // Filter out the removed course from the cart state
+      const updatedCart = cart.filter((course) => course._id !== courseId);
+      setCart(updatedCart);
+
+      toast.success("Course removed from cart!");
+    } catch (error) {
+      console.error("Error removing course from cart:", error.message);
+      // Handle error, e.g., show error message to user
+      toast.error("Failed to remove course from cart. Please try again later.");
+    }
   };
 
   const handleApplyCoupon = () => {
@@ -33,15 +95,12 @@ function Cart() {
 
   const total = cart.reduce((acc, course) => acc + course.charges, 0);
   const discountedTotal = total - total * discount;
-  const originalTotal = total * 5.70;
+  const originalTotal = total * 5.7;
   const discountPercentage = (1 - discountedTotal / originalTotal) * 100;
 
-  const navigate = useNavigate();
-
   const handleCheckout = () => {
-    navigate('/checkout', { state: { discount } });
+    navigate("/checkout", { state: { discount } });
   };
-
 
   return (
     <div className="bg-blue-100 pb-10">
@@ -62,7 +121,7 @@ function Cart() {
             </p>
             <a
               href="/learning"
-              className="bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-teal-800 duration-300"
+              className="bg-pink-600 text-white py-2 px-4 rounded-md hover:bg-pink-800 duration-1000"
             >
               Keep Shopping
             </a>
@@ -104,7 +163,7 @@ function Cart() {
                       <p className="text-gray-600 mb-1">By {course.author}</p>
                       <span>
                         <p className="text-black line-through opacity-75 font-semibold text-base sm:text-lg mb-1">
-                          ${(course.charges * 5.70).toFixed(2)}
+                          ${(course.charges * 5.7).toFixed(2)}
                         </p>
                       </span>
                     </div>
@@ -140,7 +199,10 @@ function Cart() {
               <p className="text-gray-600 mb-2">
                 {discountPercentage.toFixed(2)}% off
               </p>
-              <button onClick={handleCheckout} className="bg-pink-600 text-white w-full py-2 rounded-md hover:bg-pink-700 duration-200 mb-2">
+              <button
+                onClick={handleCheckout}
+                className="bg-pink-600 text-white w-full py-2 rounded-md hover:bg-pink-700 duration-200 mb-2"
+              >
                 Checkout
               </button>
               {discount > 0 && (
@@ -149,7 +211,9 @@ function Cart() {
                 </p>
               )}
 
-              <h2 className="font-bold text-lg text-gray-600 mb-2 mt-3">Promotions</h2>
+              <h2 className="font-bold text-lg text-gray-600 mb-2 mt-3">
+                Promotions
+              </h2>
               <div className="flex">
                 <input
                   type="text"
@@ -172,12 +236,6 @@ function Cart() {
           </div>
         )}
       </div>
-      <div className="w-full mt-8 sm:mt-0 px-2 sm:px-0 space-y-1 pt-6 pb-4 lg:px-6 xl:px-20 flex flex-col items-start md:px-2">
-        <p className="font-[Chivo] px-3 lg:px-0 text-md font-bold sm:text-3xl text-[#272727]">
-          You might also like
-        </p>
-      </div>
-      <CoursesList />
     </div>
   );
 }

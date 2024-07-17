@@ -1,56 +1,89 @@
-const User = require('../model/UserModel');
-const Course = require('../model/CourseSchema'); // Assuming you have a Course model
+const Cart = require("../model/cartModel");
+const Course = require("../model/CourseSchema");
 
-const addCart = async (req, res) => {
+// Add course to cart
+const addToCart = async (req, res) => {
+  const userId = req.userId; // Assuming userId is set by verifyToken middleware
+  const { courseId } = req.body;
+
   try {
-    const userId = req.userId; // Extracted from the JWT
-    const courseId = req.body.courseId;
+    let cart = await Cart.findOne({ user: userId });
 
-    // Ensure the courseId is valid and exists
-    const course = await Course.findById(courseId);
-    if (!course) {
-      return res.status(404).json({ error: "Course not found" });
+    if (!cart) {
+      cart = new Cart({ user: userId, courses: [] });
     }
 
-    const user = await User.findById(userId);
-    if (!user.cart.includes(courseId)) {
-      user.cart.push(courseId);
-      await user.save();
-    }
+    const courseExists = cart.courses.find(
+      (item) => item.course.toString() === courseId
+    );
 
-    res.status(200).json({ message: "Course added to cart" });
+    if (courseExists) {
+      return res.status(400).json({ message: "Course already in cart" });
+    } 
+
+    cart.courses.push({ course: courseId, quantity: 1 });
+    await cart.save();
+
+    res.status(201).json({ message: "Course added to cart", cart });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error adding to cart:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-const removeCart = async (req, res) => {
+// Remove course from cart
+const removeFromCart = async (req, res) => {
+  const userId = req.userId; // Assuming userId is set by verifyToken middleware
+  const courseId = req.params.id; // Assuming course ID is passed as a URL parameter
+
   try {
-    const userId = req.userId;
-    const courseId = req.body.courseId;
+    const cart = await Cart.findOne({ user: userId });
 
-    const user = await User.findById(userId);
-    user.cart = user.cart.filter((id) => id.toString() !== courseId);
-    await user.save();
+    if (!cart) {
+      return res.status(404).json({ message: "Cart not found" });
+    }
 
-    res.status(200).json({ message: "Course removed from cart" });
+    const courseIndex = cart.courses.findIndex(
+      (item) => item.course.toString() === courseId
+    );
+
+    if (courseIndex === -1) {
+      return res.status(404).json({ message: "Course not found in cart" });
+    }
+
+    cart.courses.splice(courseIndex, 1);
+
+    await cart.save();
+
+    res.status(200).json({ message: "Course removed from cart", cart });
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error removing from cart:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-const getCartItems = async (req, res) => {
+
+
+// Get user's cart
+const getUserCart = async (req, res) => {
+  const userId = req.userId; // Assuming userId is set by verifyToken middleware
+
   try {
-    const userId = req.userId;
-    const user = await User.findById(userId).populate("cart");
-    res.status(200).json({ cart: user.cart });
+    const cart = await Cart.findOne({ user: userId }).populate('courses.course');
+
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    res.status(200).json(cart.courses);
   } catch (error) {
-    res.status(500).json({ error: "Internal server error" });
+    console.error("Error fetching cart:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
 module.exports = {
-  addCart,
-  removeCart,
-  getCartItems,
+  addToCart,
+  removeFromCart,
+  getUserCart,
 };

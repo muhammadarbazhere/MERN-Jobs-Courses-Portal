@@ -28,6 +28,7 @@ const CoursesTable = () => {
       setLoading(false);
     }
   };
+  
   const handleDeleteCourse = async (id) => {
     try {
       const response = await fetch(`http://localhost:3000/courses/deleteCourse/${id}`, {

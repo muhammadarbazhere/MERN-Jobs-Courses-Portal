@@ -29,14 +29,7 @@ const userSchema = mongoose.Schema({
     role: {
         type: String,
         default: 'user',
-    },
-     cart: [
-        {
-             type: mongoose.Schema.Types.ObjectId,
-              ref: 'Course'
-        }
-    ],
-    
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);
