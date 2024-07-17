@@ -12,6 +12,7 @@ function Navbar() {
   const [activeNavLink, setActiveNavLink] = useState("home"); // State to manage active NavLink
   const location = useLocation();
   const navigate = useNavigate()
+  const [cartItems, setCartItems] = useState([]);
 
   const toggleDrawer = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -22,7 +23,6 @@ function Navbar() {
   };
 
   const isLoggedIn = useSelector((state) => state.auth.isLoggedin);
-  const cartItems = useSelector((state) => state.cart.items);
 
   useEffect(() => {
     const fetchUserData = async () => {

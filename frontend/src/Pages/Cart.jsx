@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CoursesList from "../Components/CoursesFiles/CoursesList";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -13,16 +13,19 @@ function Cart() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCartItems(); // Pass stored token to fetchCartItems
+    fetchCartItems(); // Fetch cart items when component mounts
   }, []);
 
+  // Function to fetch cart items
   const fetchCartItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/getUserCart", {
+      const response = await fetch("http://localhost:3000/cart/getUserCart", {
         method: "GET",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          // Include any necessary headers, such as Authorization if needed
+          // "Authorization": `Bearer ${accessToken}`,
         },
       });
 
@@ -31,7 +34,6 @@ function Cart() {
       }
 
       const data = await response.json();
-      console.log(data);
 
       // Map each item in the cart to the format expected by your component
       const formattedCart = data.map((item) => ({
@@ -50,18 +52,17 @@ function Cart() {
     }
   };
 
+  // Function to handle removal of a course from the cart
   const handleRemoveFromCart = async (courseId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/deleteCart/${courseId}`,
+        `http://localhost:3000/cart/deleteCart/${courseId}`,
         {
           method: "DELETE",
           credentials: "include",
           headers: {
             "Content-Type": "application/json",
-            // Include the token from cookies
-            "Authorization": `Bearer ${document.cookie.split('=')[1]}`,
-          }
+          },
         }
       );
 
@@ -76,11 +77,13 @@ function Cart() {
       toast.success("Course removed from cart!");
     } catch (error) {
       console.error("Error removing course from cart:", error.message);
-      // Handle error, e.g., show error message to user
-      toast.error("Failed to remove course from cart. Please try again later.");
+      toast.error(
+        "Failed to remove course from cart. Please try again later."
+      );
     }
   };
 
+  // Function to handle applying a coupon code
   const handleApplyCoupon = () => {
     if (coupon === "arbaz") {
       setError("");
@@ -93,11 +96,13 @@ function Cart() {
     }
   };
 
+  // Calculate total amounts
   const total = cart.reduce((acc, course) => acc + course.charges, 0);
   const discountedTotal = total - total * discount;
   const originalTotal = total * 5.7;
   const discountPercentage = (1 - discountedTotal / originalTotal) * 100;
 
+  // Function to handle checkout
   const handleCheckout = () => {
     navigate("/checkout", { state: { discount } });
   };
@@ -236,6 +241,7 @@ function Cart() {
           </div>
         )}
       </div>
+
     </div>
   );
 }

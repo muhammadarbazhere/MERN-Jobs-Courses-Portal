@@ -70,11 +70,39 @@ function AppRoutes() {
     !location.pathname.startsWith("/signin") &&
     !location.pathname.startsWith("/policy");
 
-    const showNavbar = !location.pathname.startsWith("/checkout");
+  const showNavbar = 
+    !location.pathname.startsWith("/checkout") && 
+    !location.pathname.startsWith("/policy");
+
+    const fetchCartItems = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/cart/getUserCart", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Cart items fetched:", data);
+          if (Array.isArray(data)) {
+            setCartItems(data);
+          } else {
+            console.error("Unexpected data format:", data);
+          }
+        } else {
+          throw new Error("Failed to fetch cart items");
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
   return (
     <>
-       {showNavbar && (location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />)}
+      {showNavbar && (location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />)}
       {location.pathname.startsWith("/My") && isLoggedIn && <AdminPanel />}
 
       <Routes>
@@ -93,8 +121,7 @@ function AppRoutes() {
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
-        <Route path="/cart" element={<Cart />} />
-        
+        <Route path="/cart" element={isLoggedIn ? <Cart /> : <Navigate to="/signin" />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/policy" element={<Policy />} />
 

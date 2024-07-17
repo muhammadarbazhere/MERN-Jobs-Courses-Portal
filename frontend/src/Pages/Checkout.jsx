@@ -34,7 +34,7 @@ function Checkout() {
 
   const fetchCartItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/getUserCart", {
+      const response = await fetch("http://localhost:3000/cart/getUserCart", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -71,20 +71,38 @@ function Checkout() {
     });
   };
 
-  const handleCheckout = (e) => {
-    // Handle the checkout process
-    setTimeout(() => {
+  const handleCheckout = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/cart/clearCart", {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to clear cart");
+      }
+
+      // Redirect to learning page after checkout
       window.location.href = '/learning';
-    });
-    setPaymentDetails({
-      nameOnCard: "",
-      cardNumber: "",
-      expiryDate: "",
-      cvc: "",
-    });
-    console.log("Billing Address:", billingAddress);
-    console.log("Payment Details:", paymentDetails);
+
+      // Reset payment details after checkout
+      setPaymentDetails({
+        nameOnCard: "",
+        cardNumber: "",
+        expiryDate: "",
+        cvc: "",
+      });
+
+      console.log("Billing Address:", billingAddress);
+      console.log("Payment Details:", paymentDetails);
+    } catch (error) {
+      console.error("Error during checkout:", error);
+    }
   };
+  
 
   const total = cart.reduce((acc, course) => acc + course.charges, 0);
   const discountedTotal = total - total * discount;

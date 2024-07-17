@@ -177,7 +177,7 @@ const updateUserRole = async (req, res) => {
 
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
-  console.log('Token:', token); // Log the token for debugging
+  // console.log('Token:', token); // Log the token for debugging
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });

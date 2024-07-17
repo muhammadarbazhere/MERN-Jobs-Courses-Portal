@@ -40,10 +40,9 @@ function Courses() {
   // Pagination function
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Add course to cart
   const handleAddToCart = async (course) => {
     try {
-      const response = await fetch('http://localhost:3000/addCart', {
+      const response = await fetch('http://localhost:3000/cart/addCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +56,7 @@ function Courses() {
         throw new Error(data.message || 'Failed to add course to cart');
       }
 
-      console.log('Course added to cart:', data);
+      // Update local cart items
       setCartItems(prevItems => [...prevItems, course]);
       toast.success(`${course.title} added to cart!`);
       
