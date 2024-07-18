@@ -12,7 +12,7 @@ const MixJobInternships = () => {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await fetch("http://localhost:3000/jobs-internships/getAllJobs");
+        const response = await fetch("/route/jobs-internships/getAllJobs");
         if (!response.ok) {
           throw new Error("Failed to fetch jobs");
         }

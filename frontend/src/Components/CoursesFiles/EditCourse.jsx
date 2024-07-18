@@ -25,7 +25,7 @@ const EditCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/courses/getCourseById/${id}`);
+        const response = await fetch(`/route/courses/getCourseById/${id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch course');
         }
@@ -75,7 +75,7 @@ const EditCourse = () => {
         formDataToSend.append("image", updateData.image);  // Append image file if it exists
       }
   
-      const response = await fetch(`http://localhost:3000/courses/updateCourse/${id}`, {
+      const response = await fetch(`/route/courses/updateCourse/${id}`, {
         method: 'PUT',
         body: formDataToSend,
       });
@@ -211,7 +211,7 @@ const EditCourse = () => {
               />
               {updateData.image && typeof updateData.image === 'string' && (
                 <div className="mt-3">
-                  <img src={`http://localhost:3000/${updateData.image}`} alt="Course" className="object-contain h-40 w-full" />
+                  <img src={`/route/${updateData.image}`} alt="Course" className="object-contain h-40 w-full" />
                 </div>
               )}
               {updateData.image && typeof updateData.image !== 'string' && (

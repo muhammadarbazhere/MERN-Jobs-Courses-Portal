@@ -16,7 +16,7 @@ const CoursesTable = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch("http://localhost:3000/courses/getCourses");
+      const response = await fetch("/route/courses/getCourses");
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -31,7 +31,7 @@ const CoursesTable = () => {
   
   const handleDeleteCourse = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/courses/deleteCourse/${id}`, {
+      const response = await fetch(`/route/courses/deleteCourse/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

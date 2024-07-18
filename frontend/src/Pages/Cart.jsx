@@ -19,7 +19,7 @@ function Cart() {
   // Function to fetch cart items
   const fetchCartItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/cart/getUserCart", {
+      const response = await fetch("/route/cart/getUserCart", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -56,7 +56,7 @@ function Cart() {
   const handleRemoveFromCart = async (courseId) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/cart/deleteCart/${courseId}`,
+        `/route/cart/deleteCart/${courseId}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -114,9 +114,11 @@ function Cart() {
           <p className="font-[Chivo] text-md mb-4 font-bold sm:text-3xl text-[#272727]">
             Shopping Cart
           </p>
-          <h1 className="mb-2 font-bold sm:text-lg text-[#272727]">
+          {cart.length > 0 &&
+            <h1 className="mb-2 font-bold sm:text-lg text-[#272727]">
             {cart.length} {cart.length === 1 ? "course" : "courses"} in Cart
           </h1>
+          }
         </div>
 
         {cart.length === 0 ? (
@@ -140,7 +142,7 @@ function Cart() {
                   className="w-full mb-6 bg-white border-2 border-gray-200 rounded-md shadow-lg overflow-hidden flex flex-col sm:flex-row"
                 >
                   <img
-                    src={`http://localhost:3000/${course.image}`}
+                    src={`/route/${course.image}`}
                     className="w-full sm:w-40 h-40 object-cover"
                     alt={course.title}
                   />

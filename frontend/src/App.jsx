@@ -74,31 +74,31 @@ function AppRoutes() {
     !location.pathname.startsWith("/checkout") && 
     !location.pathname.startsWith("/policy");
 
-    const fetchCartItems = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/cart/getUserCart", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+    // const fetchCartItems = async () => {
+    //   try {
+    //     const response = await fetch("/route/cart/getUserCart", {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       credentials: "include",
+    //     });
   
-        if (response.ok) {
-          const data = await response.json();
-          console.log("Cart items fetched:", data);
-          if (Array.isArray(data)) {
-            setCartItems(data);
-          } else {
-            console.error("Unexpected data format:", data);
-          }
-        } else {
-          throw new Error("Failed to fetch cart items");
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
+    //     if (response.ok) {
+    //       const data = await response.json();
+    //       console.log("Cart items fetched:", data);
+    //       if (Array.isArray(data)) {
+    //         setCartItems(data);
+    //       } else {
+    //         console.error("Unexpected data format:", data);
+    //       }
+    //     } else {
+    //       throw new Error("Failed to fetch cart items");
+    //     }
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
 
   return (
     <>

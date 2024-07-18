@@ -10,7 +10,7 @@ const UserData = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await fetch("http://localhost:3000/allUsers", {
+        const response = await fetch("/route/allUsers", {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -42,7 +42,7 @@ const UserData = () => {
 
     if (isConfirmed) {
       try {
-        const response = await fetch("http://localhost:3000/updateUserRole", {
+        const response = await fetch("/route/updateUserRole", {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",

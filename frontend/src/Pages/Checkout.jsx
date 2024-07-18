@@ -34,7 +34,7 @@ function Checkout() {
 
   const fetchCartItems = async () => {
     try {
-      const response = await fetch("http://localhost:3000/cart/getUserCart", {
+      const response = await fetch("/route/cart/getUserCart", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -73,7 +73,7 @@ function Checkout() {
 
   const handleCheckout = async () => {
     try {
-      const response = await fetch("http://localhost:3000/cart/clearCart", {
+      const response = await fetch("/route/cart/clearCart", {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -241,7 +241,7 @@ function Checkout() {
       >
         <div className="flex items-center gap-4">
           <img
-            src={`http://localhost:3000/${course.image}`}
+            src={`/route/${course.image}`}
             alt={course.title}
             className="w-20 h-20 object-cover rounded-md"
           />

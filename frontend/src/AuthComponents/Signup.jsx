@@ -47,7 +47,7 @@ function Signup() {
       formData.append('dateOfBirth', inputs.dateOfBirth);
       formData.append('image', inputs.image);
 
-      const response = await fetch('http://localhost:3000/signup', {
+      const response = await fetch('/route/signup', {
         method: 'POST',
         body: formData,
       });

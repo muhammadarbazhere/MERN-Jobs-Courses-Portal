@@ -31,7 +31,7 @@ const Dashboard = () => {
   const sendRequest = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/user", {
+      const response = await fetch("/route/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -63,7 +63,7 @@ const Dashboard = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/logout", {
+      const res = await fetch("/route/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -143,7 +143,7 @@ const Dashboard = () => {
             ) : user && user.image ? (
               <img
                 className="sm:w-28 w-10 border-2 border-white h-10 sm:h-28 rounded-full"
-                src={`http://localhost:3000/${user.image}`}
+                src={`/route/${user.image}`}
                 alt="Profile"
               />
             ) : (

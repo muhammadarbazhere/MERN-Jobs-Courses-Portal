@@ -12,7 +12,7 @@ const Internships = () => {
     const fetchInternships = async () => {
         try {
             setLoading(true);
-            const response = await fetch("http://localhost:3000/jobs-internships/getAllJobs");
+            const response = await fetch("/route/jobs-internships/getAllJobs");
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }

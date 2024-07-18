@@ -28,7 +28,7 @@ function AddJobInternshipForm() {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/jobs-internships/create', {
+      const response = await fetch('/route/jobs-internships/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

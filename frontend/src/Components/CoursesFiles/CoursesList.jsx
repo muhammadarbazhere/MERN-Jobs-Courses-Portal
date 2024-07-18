@@ -19,7 +19,7 @@ function Courses() {
   const fetchCourses = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3000/courses/getCourses');
+      const response = await fetch('/route/courses/getCourses');
       if (!response.ok) {
         throw new Error('Failed to fetch courses');
       }
@@ -42,7 +42,7 @@ function Courses() {
 
   const handleAddToCart = async (course) => {
     try {
-      const response = await fetch('http://localhost:3000/cart/addCart', {
+      const response = await fetch('/route/cart/addCart', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ function Courses() {
               className="w-full sm:max-w-sm rounded-md overflow-hidden bg-white mb-6 border-2 border-white shadow-lg transform transition-all hover:scale-105"
             >
               <img
-                src={`http://localhost:3000/${course.image}`}
+                src={`/route/${course.image}`}
                 className="w-full h-64 object-cover"
                 alt={course.title}
               />

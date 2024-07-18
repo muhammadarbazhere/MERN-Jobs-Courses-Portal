@@ -40,7 +40,7 @@ function Avatar() {
   const fetchUserData = async () => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:3000/user", {
+      const response = await fetch("/route/user", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ function Avatar() {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:3000/logout", {
+      const res = await fetch("/route/logout", {
         method: "POST",
         credentials: "include",
       });
@@ -107,7 +107,7 @@ function Avatar() {
             <div className="relative">
               <img
                 className="sm:w-10 w-12 sm:h-10 h-12 rounded-full border border-white"
-                src={`http://localhost:3000/${user.image}`}
+                src={`/route/${user.image}`}
                 alt="Profile"
               />
               <span className="bg-green-400 text-white rounded-full px-2 py-2 text-xs absolute top-0 right-0"></span>

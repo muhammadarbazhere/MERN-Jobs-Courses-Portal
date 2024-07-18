@@ -46,7 +46,7 @@ function AddCourseForm() {
       formDataToSend.append("image", formData.image); // Append image file
 
       const response = await fetch(
-        "http://localhost:3000/courses/createCourse",
+        "/route/courses/createCourse",
         {
           method: "POST",
           body: formDataToSend,

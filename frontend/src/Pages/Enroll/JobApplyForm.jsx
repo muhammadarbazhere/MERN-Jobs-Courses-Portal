@@ -40,7 +40,7 @@ const JobApplyForm = () => {
       formDataForUpload.append("email", formData.email);
       formDataForUpload.append("resume", formData.resume);
   
-      const url = `http://localhost:3000/form/apply/${id}`; 
+      const url = `/route/form/apply/${id}`; 
       
       try {
         const response = await fetch(url, {

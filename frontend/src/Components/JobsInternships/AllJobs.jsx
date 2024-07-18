@@ -18,7 +18,7 @@ const AllJobs = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:3000/jobs-internships/getAllJobs"
+        "/route/jobs-internships/getAllJobs"
       );
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -35,7 +35,7 @@ const AllJobs = () => {
   const handleDelete = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:3000/jobs-internships/delete/${id}`,
+        `/route/jobs-internships/delete/${id}`,
         {
           method: "DELETE",
         }
@@ -62,7 +62,7 @@ const AllJobs = () => {
     try {
       const jobToEdit = jobs.find((job) => job._id === id);
       const response = await fetch(
-        `http://localhost:3000/jobs-internships/update/${id}`,
+        `/route/jobs-internships/update/${id}`,
         {
           method: "PUT",
           headers: {

@@ -20,13 +20,13 @@ app.use(cors({ credentials: true, origin: true })); // Ensure all origins
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/route/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/", userRoutes);
-app.use("/courses", courseRoutes);
-app.use("/cart", cartRoutes); 
-app.use('/jobs-internships', jobInternshipRoutes);
-app.use("/form", applyJobRoutes);
+app.use("/route", userRoutes);
+app.use("/route/courses", courseRoutes);
+app.use("/route/cart", cartRoutes); 
+app.use('/route/jobs-internships', jobInternshipRoutes);
+app.use("/route/form", applyJobRoutes);
 
 async function connectDB() {
   try {
