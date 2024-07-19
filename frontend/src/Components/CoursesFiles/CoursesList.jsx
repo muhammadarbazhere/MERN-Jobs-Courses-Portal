@@ -11,6 +11,7 @@ function Courses() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [cartItems, setCartItems] = useState([]);
+  const [loadingCart, setLoadingCart] = useState(null); // Track loading state for each course
 
   useEffect(() => {
     fetchCourses();
@@ -32,15 +33,14 @@ function Courses() {
     }
   };
 
-  // Get current courses to display
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentCourses = courses.slice(indexOfFirstPost, indexOfLastPost);
 
-  // Pagination function
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleAddToCart = async (course) => {
+    setLoadingCart(course._id); // Set loading state for this course
     try {
       const response = await fetch('/route/cart/addCart', {
         method: 'POST',
@@ -63,9 +63,10 @@ function Courses() {
     } catch (error) {
       toast.error(`Failed to add ${course.title} to cart: ${error.message}`);
       console.error('Error adding course to cart:', error);
+    } finally {
+      setLoadingCart(null); // Reset loading state for this course
     }
   };
-  
 
   return (
     <div className="font-[Chivo] bg-blue-100 px-4 lg:px-6 xl:px-20">
@@ -126,9 +127,10 @@ function Courses() {
 
                 <button
                   onClick={() => handleAddToCart(course)}
-                  className="bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 flex rounded-md text-white font-[Chivo] my-2 w-full text-center items-center justify-center"
+                  className={`bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-2 flex rounded-md text-white font-[Chivo] my-2 w-full text-center items-center justify-center ${loadingCart === course._id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={loadingCart === course._id}
                 >
-                  Add To Cart
+                  {loadingCart === course._id ? 'Adding...' : 'Add To Cart'}
                 </button>
               </div>
             </div>
@@ -136,7 +138,6 @@ function Courses() {
         </div>
       )}
 
-      {/* Pagination */}
       <div className="flex justify-center pt-6">
         <button
           className="mx-1 px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none"

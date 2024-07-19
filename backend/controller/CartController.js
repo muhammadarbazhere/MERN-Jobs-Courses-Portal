@@ -2,10 +2,11 @@ const User = require('../model/UserModel');
 
 // Add course to cart
 const addToCart = async (req, res) => {
-    const userId = req.userId; // Assuming userId is set by verifyToken middleware
+    const userId = req.userId; 
     const { courseId } = req.body;
 
     try {
+        // Populate path must match the schema
         let user = await User.findById(userId).populate('cart.courses.course');
 
         if (!user) {
@@ -61,6 +62,7 @@ const getUserCart = async (req, res) => {
     const userId = req.userId;
 
     try {
+        // Populate path must match the schema
         const user = await User.findById(userId).populate('cart.courses.course');
 
         if (!user) {
