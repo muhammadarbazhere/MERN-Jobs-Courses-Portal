@@ -42,9 +42,11 @@ import Signup from "./AuthComponents/Signup";
 import { useSelector } from "react-redux";
 import Login from "./AuthComponents/Login";
 import Welcome from "./Pages/Admin/Welcome";
+
 import Cart from './Pages/Cart'
 import Checkout from './Pages/Checkout'
 import Policy from './Pages/Policy'
+import OrderSuccess from "./Pages/OrderSuccess";
 
 function App() {
   return (
@@ -74,32 +76,6 @@ function AppRoutes() {
     !location.pathname.startsWith("/checkout") && 
     !location.pathname.startsWith("/policy");
 
-    // const fetchCartItems = async () => {
-    //   try {
-    //     const response = await fetch("/route/cart/getUserCart", {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       credentials: "include",
-    //     });
-  
-    //     if (response.ok) {
-    //       const data = await response.json();
-    //       console.log("Cart items fetched:", data);
-    //       if (Array.isArray(data)) {
-    //         setCartItems(data);
-    //       } else {
-    //         console.error("Unexpected data format:", data);
-    //       }
-    //     } else {
-    //       throw new Error("Failed to fetch cart items");
-    //     }
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // };
-
   return (
     <>
       {showNavbar && (location.pathname === "/dashboard" ? <DashboardMain /> : <Navbar />)}
@@ -118,12 +94,16 @@ function AppRoutes() {
         <Route path="/form" element={<Enrollmentform />} />
         <Route path="/apply/:id" element={<JobApplyForm />} />
 
+
         <Route path="/outSourcing" element={<OutSourcing />} />
         <Route path="/remoteJobs" element={<RemoteJobs />} />
         <Route path="/JobsInternships" element={<MixJobInternships />} />
+
         <Route path="/cart" element={isLoggedIn ? <Cart /> : <Navigate to="/signin" />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/policy" element={<Policy />} />
+        
+        <Route path="/order-success" element={<OrderSuccess />} />
 
         {/* ROUTES FOR SECOND NAVBAR */}
         <Route path="/MyAdmin" element={<Welcome />} />

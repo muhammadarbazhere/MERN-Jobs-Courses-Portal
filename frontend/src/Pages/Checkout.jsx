@@ -6,18 +6,17 @@ import {
   FaCcJcb,
   FaCcStripe,
   FaChevronDown,
+  FaPaypal,
 } from "react-icons/fa";
 import { CiGlobe } from "react-icons/ci";
 import { FaCreditCard } from "react-icons/fa6";
 import { useLocation, useNavigate } from "react-router-dom";
-import countries from "./countries"; // Adjust the path as needed
+import countries from "./countries"; 
 import logo from '../assets/logo.jpg';
 
 function Checkout() {
   const [cart, setCart] = useState([]);
-  const location = useLocation();
-  const { discount } = location.state || { discount: 0 }; // Get discount from state
-
+  const [paymentMethod, setPaymentMethod] = useState("card");
   const [billingAddress, setBillingAddress] = useState({
     country: "Pakistan",
   });
@@ -27,9 +26,12 @@ function Checkout() {
     expiryDate: "",
     cvc: "",
   });
+  const location = useLocation();
+  const { discount } = location.state || { discount: 0 };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCartItems(); // Fetch cart items on component mount
+    fetchCartItems();
   }, []);
 
   const fetchCartItems = async () => {
@@ -71,38 +73,62 @@ function Checkout() {
     });
   };
 
-  const handleCheckout = async () => {
+  const handleProceedForCredit = async () => {
     try {
-      const response = await fetch("/route/cart/clearCart", {
-        method: "DELETE",
-        credentials: "include",
+      const response = await fetch("/route/payment/credit-card", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          cart,
+          discount,
+          paymentDetails,
+        }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to clear cart");
+        const errorData = await response.text();
+        throw new Error(`Failed to process credit card payment: ${errorData}`);
       }
 
-      // Redirect to learning page after checkout
-      window.location.href = '/learning';
-
-      // Reset payment details after checkout
-      setPaymentDetails({
-        nameOnCard: "",
-        cardNumber: "",
-        expiryDate: "",
-        cvc: "",
-      });
-
-      console.log("Billing Address:", billingAddress);
-      console.log("Payment Details:", paymentDetails);
+      const { transactionId } = await response.json();
+      alert(`Payment successful! Transaction ID: ${transactionId}`);
+      navigate('/order-success'); // Redirect to confirmation page or any other page
     } catch (error) {
-      console.error("Error during checkout:", error);
+      console.error("Error processing credit card payment:", error.message);
+    }
+  };
+
+  const handleProceedForPaypal = async () => {
+    try {
+      const response = await fetch("/route/payment/paypal", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          cart,
+          discount,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.text();
+        throw new Error(`Failed to redirect to PayPal: ${errorData}`);
+      }
+  
+      const { redirectUrl } = await response.json();
+      window.location.href = redirectUrl;
+    } catch (error) {
+      console.error("Error redirecting to PayPal:", error.message);
     }
   };
   
+
+  const ProceedHandler = () => {
+    return paymentMethod === "paypal" ? handleProceedForPaypal : handleProceedForCredit;
+  };
 
   const total = cart.reduce((acc, course) => acc + course.charges, 0);
   const discountedTotal = total - total * discount;
@@ -164,7 +190,7 @@ function Checkout() {
                 </select>
                 <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" />
               </div>
-              <p className="text-sm pb-3 pt-1">
+              <p className="text-sm pb-3 pt-1 text-gray-700">
                 Arbaz WebCraft is required by law to collect applicable
                 transaction taxes for purchases made in certain tax
                 jurisdictions.
@@ -175,7 +201,23 @@ function Checkout() {
               Payment method
             </label>
             <div className="mb-4 border border-gray-400">
-              <div className="flex items-center py-1 mb-2 border-2 border-gray-300 justify-between px-2">
+              <div
+              onClick={() => setPaymentMethod("card")}
+              className={`flex items-center py-1 mb-2 border-2 border-gray-300 justify-start px-2 ${paymentMethod === "card" ? "border-gray-400" : ""}`}>
+
+                 <div>
+                 <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="card"
+                    checked={paymentMethod === "card"}
+                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    className="mr-2"
+                  />
+                 </div>
+
+
+                <div className="flex justify-between w-full">
                 <p className="text-md font-bold sm:text-lg flex items-center gap-2 text-gray-700">
                   <span className="border border-gray-400 p-1 rounded-md">
                     <FaCreditCard size={20} />
@@ -189,7 +231,9 @@ function Checkout() {
                   <FaCcJcb size={30} className="text-orange-700" />
                   <FaCcStripe size={30} className="text-purple-700" />
                 </p>
+                </div>
               </div>
+              {paymentMethod === "card" && (
               <div className="mb-4 px-4">
                 <label>Name on card</label>
                 <input
@@ -228,6 +272,36 @@ function Checkout() {
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
                 />
               </div>
+  )}
+
+<div
+                  className={`flex items-center py-1 mb-2 border-2 border-gray-300 justify-start px-2 ${paymentMethod === "paypal" ? "border-gray-400" : ""}`}
+                  onClick={() => setPaymentMethod("paypal")}
+                >
+                
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="paypal"
+                checked={paymentMethod === "paypal"}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+                className="mr-2"
+              />
+                  <p className="text-md font-bold sm:text-lg flex items-center gap-2 text-gray-700">
+                    <span className="border border-gray-400 p-1 rounded-md">
+                      <FaPaypal size={20} />
+                    </span>
+                    <span> PayPal</span>
+                  </p>
+                </div>
+                {paymentMethod === "paypal" && (
+                  <div className="mb-4 px-4">
+                    <p className="text-gray-700 text-base py-4 px-4">
+                      In order to complete your transaction, we will transfer
+                      you over to PayPal's secure servers.
+                    </p>
+                  </div>
+                )} 
             </div>
           </form>
 
@@ -284,17 +358,12 @@ function Checkout() {
               .
             </p>
             <button
-              onClick={handleCheckout}
+              onClick={ProceedHandler}
               type="submit"
               className="bg-pink-500 hover:bg-pink-700 duration-500 mt-1 text-white font-bold py-4 w-full rounded focus:outline-none focus:shadow-outline"
-              disabled={
-                !paymentDetails.cardNumber &&
-                !paymentDetails.nameOnCard &&
-                !paymentDetails.expiryDate &&
-                !paymentDetails.cvc
-              }
+
             >
-              Complete Checkout
+              Proceed Checkout
             </button>
             <p className="text-gray-700 items-center text-center text-sm mt-1">
               30-Day Money-Back Guarantee
@@ -308,3 +377,4 @@ function Checkout() {
 }
 
 export default Checkout;
+

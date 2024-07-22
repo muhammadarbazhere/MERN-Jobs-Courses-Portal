@@ -36,7 +36,10 @@ const userSchema = mongoose.Schema({
             quantity: { type: Number, default: 1 }
         }]
     },
-    
+    bankAccount: { // New field to store user's bank account details
+        type: String,
+        required: true
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema);

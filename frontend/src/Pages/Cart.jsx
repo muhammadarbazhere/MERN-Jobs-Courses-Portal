@@ -23,6 +23,8 @@ function Cart() {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
+          // Include any necessary headers, such as Authorization if needed
+          // "Authorization": `Bearer ${accessToken}`,
         },
       });
 
@@ -31,7 +33,6 @@ function Cart() {
       }
 
       const data = await response.json();
-      console.log("Cart items fetched:", data); // Debug log
 
       // Map each item in the cart to the format expected by your component
       const formattedCart = data.map((item) => ({
@@ -42,7 +43,6 @@ function Cart() {
         author: item.course.author,
         duration: item.course.duration,
         image: item.course.image,
-        quantity: item.quantity, // Include quantity
       }));
 
       setCart(formattedCart);
@@ -89,14 +89,14 @@ function Cart() {
       setDiscount(0.1); // 10% discount
       setCoupon("");
     } else {
-      setError("The coupon code entered is not valid.");
+      setError("The coupon code entered is not valid for this course.");
       setDiscount(0); // No discount
       setCoupon("");
     }
   };
 
   // Calculate total amounts
-  const total = cart.reduce((acc, course) => acc + course.charges * course.quantity, 0);
+  const total = cart.reduce((acc, course) => acc + course.charges, 0);
   const discountedTotal = total - total * discount;
   const originalTotal = total * 5.7;
   const discountPercentage = (1 - discountedTotal / originalTotal) * 100;
@@ -105,7 +105,7 @@ function Cart() {
   const handleCheckout = () => {
     navigate("/checkout", { state: { discount } });
   };
-  
+
   return (
     <div className="bg-blue-100 pb-10">
       <div className="font-[Chivo] py-10 px-4 lg:px-6 xl:px-20">
@@ -113,11 +113,11 @@ function Cart() {
           <p className="font-[Chivo] text-md mb-4 font-bold sm:text-3xl text-[#272727]">
             Shopping Cart
           </p>
-          {cart.length > 0 && (
+          {cart.length > 0 &&
             <h1 className="mb-2 font-bold sm:text-lg text-[#272727]">
-              {cart.length} {cart.length === 1 ? "course" : "courses"} in Cart
-            </h1>
-          )}
+            {cart.length} {cart.length === 1 ? "course" : "courses"} in Cart
+          </h1>
+          }
         </div>
 
         {cart.length === 0 ? (
@@ -165,7 +165,7 @@ function Cart() {
                         </p>
                       </p>
                     </p>
-                    <div className="flex justify-between">
+                    <div className="flex justify-between ">
                       <p className="text-gray-600 mb-1">By {course.author}</p>
                       <span>
                         <p className="text-black line-through opacity-75 font-semibold text-base sm:text-lg mb-1">
@@ -237,11 +237,12 @@ function Cart() {
                 </button>
               </div>
               {error && <p className="text-red-600 mt-2">{error}</p>}
+              <ToastContainer />
             </div>
           </div>
         )}
       </div>
-      <ToastContainer position="top-right" autoClose={5000} />
+
     </div>
   );
 }

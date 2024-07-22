@@ -13,6 +13,9 @@ const jobInternshipRoutes = require('./routes/JobRoutes');
 const applyJobRoutes = require('./routes/applyJobRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 
+const payPalRoutes = require('./routes/paypalRoutes');
+const creditCardRoutes = require('./routes/creditRoutes');
+
 const app = express();
 const port = 3000;
 
@@ -21,6 +24,9 @@ app.use(cookieParser());
 app.use(express.json());
 
 app.use("/route/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use('/route/payment', payPalRoutes);
+app.use('/route/payment', creditCardRoutes);
 
 app.use("/route", userRoutes);
 app.use("/route/courses", courseRoutes);
