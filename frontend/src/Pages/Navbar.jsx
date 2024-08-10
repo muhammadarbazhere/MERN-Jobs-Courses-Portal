@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { TiThMenu, TiTimes } from "react-icons/ti"; // Import the cross icon
-import { FaShoppingCart } from "react-icons/fa"; // Import the shopping cart icon
+import { TiThMenu, TiTimes } from "react-icons/ti"; 
+import { FaShoppingCart } from "react-icons/fa";
 import logo from "../assets/logo.jpg";
 import Avatar from "../Dashboard/MainNavbar/Files/Avatar";
 import { useSelector } from "react-redux";
@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 function Navbar() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [activeNavLink, setActiveNavLink] = useState("home"); // State to manage active NavLink
+  const [activeNavLink, setActiveNavLink] = useState("home"); 
   const location = useLocation();
   const navigate = useNavigate()
   const [cartItems, setCartItems] = useState([]);

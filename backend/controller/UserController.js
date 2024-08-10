@@ -90,7 +90,7 @@ const login = async (req, res) => {
       return res
         .status(404)
         .json({ message: "Email not found, please sign up" });
-    } 
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -133,7 +133,6 @@ const login = async (req, res) => {
 };
 
 // update user role
-// update user role
 const updateUserRole = async (req, res) => {
   const { userId, newRole } = req.body;
 
@@ -149,7 +148,8 @@ const updateUserRole = async (req, res) => {
     }
 
     // Send email notification about role change
-    const roleMessage = newRole === 'admin' ? 'You are now an admin.' : 'You are now a user.';
+    const roleMessage =
+      newRole === "admin" ? "You are now an admin." : "You are now a user.";
     const mailOptions = {
       from: process.env.EMAIL_ADMIN,
       to: user.email,
@@ -172,7 +172,6 @@ const updateUserRole = async (req, res) => {
   }
 };
 
-
 // Verify token
 
 const verifyToken = (req, res, next) => {
@@ -192,9 +191,6 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }
 };
-
-
-
 
 // Get user
 const getUserInfo = async (req, res) => {
@@ -260,10 +256,6 @@ const logout = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
-
-
-
 
 module.exports = {
   signup,

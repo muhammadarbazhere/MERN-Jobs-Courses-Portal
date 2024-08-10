@@ -1,6 +1,6 @@
 const User = require('../model/UserModel');
 
-// Add course to cart
+
 const addToCart = async (req, res) => {
     const userId = req.userId; 
     const { courseId } = req.body;

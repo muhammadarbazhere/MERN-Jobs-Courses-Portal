@@ -35,10 +35,6 @@ const userSchema = mongoose.Schema({
             course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
             quantity: { type: Number, default: 1 }
         }]
-    },
-    bankAccount: { // New field to store user's bank account details
-        type: String,
-        required: true
     }
 }, { timestamps: true });
 
